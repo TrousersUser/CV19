@@ -21,7 +21,7 @@ namespace CV19.ViewModels.Base
             OnPropertyChanged();
             return true;
         }
-        //~ViewModelBase()
+        //~Viewmodelbase()
         //{
         //    Dispose(false);
         //}
