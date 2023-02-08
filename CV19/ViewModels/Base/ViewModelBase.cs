@@ -1,10 +1,11 @@
 ﻿
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace CV19.ViewModels.Base
 {
-    internal abstract class ViewModelBase : INotifyPropertyChanged
+    internal abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
        public event PropertyChangedEventHandler? PropertyChanged;
        protected virtual void OnPropertyChanged([CallerMemberName]string PropertyName = null)
@@ -19,7 +20,21 @@ namespace CV19.ViewModels.Base
             field = value;
             OnPropertyChanged();
             return true;
-
+        }
+        //~ViewModelBase()
+        //{
+        //    Dispose(false);
+        //}
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        private bool _Disposed;
+        protected virtual void Dispose(bool Disposing)
+        {
+            if (!_Disposed || !Disposing) return;
+            _Disposed = true;
+            // Процесс освобождения неуправляемых ресурсов, возможно описать
         }
     }
 }
