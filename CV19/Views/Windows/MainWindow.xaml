@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:vm="clr-namespace:CV19.ViewModels"
         xmlns:l="clr-namespace:CV19"
         mc:Ignorable="d"
@@ -14,6 +15,10 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+
+    <!--<Window.Resources>
+        <vm:MainWindowViewModel x:Key="Comprado"/>
+    </Window.Resources>-->
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -34,7 +39,15 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl>
-            <TabItem Header="Вкладка 1">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Regular_File" Height="13" Margin="0,0,5,0"
+                                         Foreground="Red"/>
+                        <TextBlock Text="Вкладка 1"/>
+                        <!--<Image Source=""/>-->
+                    </StackPanel>
+                </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150*"/>
@@ -57,7 +70,12 @@
                              Grid.Row="0"
                              Fill="Red"
                              Stroke="Blue"
-                             StrokeThickness="3"/>
+                             StrokeThickness="3"
+                            >
+                        <Ellipse.InputBindings>
+                            <MouseBinding Command="{Binding CloseAppllicationCommand}" MouseAction="RightClick"/>
+                        </Ellipse.InputBindings>
+                    </Ellipse>
                     <GridSplitter Grid.Column="0" Grid.RowSpan="2"
                                   HorizontalAlignment="Right"
                                   Width="4"
