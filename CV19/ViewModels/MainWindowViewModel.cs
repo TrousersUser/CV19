@@ -21,5 +21,21 @@ namespace CV19.ViewModels
             #endregion
         }
         #endregion
+
+        #region Status : string - Статус программы
+        private string _Status = "Функционирует";
+        /// <summary>
+        /// Статус у программы
+        /// </summary>
+        public string Status
+        {
+            get => _Status;
+            set => Set(ref _Status, value);
+        }
+        #endregion+
+
+        #region Commands
+
+        #endregion
     }
 }
