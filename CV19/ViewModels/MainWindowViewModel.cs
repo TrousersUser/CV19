@@ -32,7 +32,7 @@ namespace CV19.ViewModels
             get => _Status;
             set => Set(ref _Status, value);
         }
-        #endregion+
+        #endregion
 
         #region Commands
 
