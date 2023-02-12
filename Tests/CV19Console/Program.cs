@@ -24,15 +24,34 @@ namespace CV19Console
                 if (string.IsNullOrEmpty(line))
                     continue;
 
-                yield return line;
+                yield return line.Replace("Korea,", "Korea -");
             }
         }
         private static DateTime[] GetDates() => GetDataLines()
             .First()
             .Split(',')
-            .Skip(4)
+            .Skip(5)
             .Select(line => DateTime.Parse(line,CultureInfo.InvariantCulture))
             .ToArray();
+
+        public static IEnumerable<(string Country, string Province, int[] Count)> GetData()
+        {
+            var lines = GetDataLines()
+                .Skip(1)
+                .Select(line => line.Split(','));
+
+            foreach (var line in lines)
+            {
+                var province = line[0].Trim();
+                var country_name = line[1].Trim(' ','"');
+                int [] ill_count = line.Skip(5)
+                    .Select(line => Int32.Parse(line))
+                    .ToArray();
+
+                yield return (country_name, province, ill_count);
+            }
+          
+        }
         static void Main(string[] args)
         {
             #region Рубрика - эксперррррименты
@@ -42,13 +61,19 @@ namespace CV19Console
 
             //foreach (string line in GetDataLines())
             //    Console.WriteLine(line); 
+
+            //foreach (DateTime date in GetDates())
+            //{
+            //    Console.WriteLine($"{date.ToShortDateString()}\n"); ;
+            //}
             #endregion
 
-            foreach (DateTime date in GetDates())
-            {
-                Console.WriteLine($"\r{date.ToShortDateString()}\n"); ;
-            }
+            var russiaCovidData = GetData()
+                .First(data => data.Country.Equals("Russia", StringComparison.OrdinalIgnoreCase));
 
+            Console.WriteLine(string.Join("\r\n",GetDates().Zip(russiaCovidData.Count, (date, count) => $"{date.ToShortDateString()} {count}")));
+           
+                
             Console.ReadLine();
         }
     }
