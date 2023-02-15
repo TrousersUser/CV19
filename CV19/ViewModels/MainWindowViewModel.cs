@@ -3,6 +3,9 @@ using CV19.ViewModels.Base;
 using System.Windows;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
+using CV19.Models;
+using System.Collections.Generic;
+using System;
 
 namespace CV19.ViewModels
 {
@@ -13,6 +16,16 @@ namespace CV19.ViewModels
             //#region Commands
             //CloseAppllicationCommand = new LambdaCommand()
             //#endregion
+
+            var data_points = new List<DataPoint>((int)(360/0.1));
+            for(var x = 0d; x <= 360; x += 0.1)
+            {
+                const double to_rad = Math.PI / 180;
+                var y = Math.Sin(x * to_rad);
+
+                data_points.Add(new DataPoint { XValue = x, YValue = y });
+            }
+            TestDataPoints = data_points;
         }
 
         #region Title : string - Заголовок окна
@@ -42,6 +55,16 @@ namespace CV19.ViewModels
         {
             get => _Status;
             set => Set(ref _Status, value);
+        }
+        #endregion
+
+        #region TestDataPoints : IEnumerable - Пробная информация, выводимая на график
+        private IEnumerable<DataPoint> _TestDataPoints;
+
+        public IEnumerable<DataPoint> TestDataPoints
+        {
+            get => _TestDataPoints;
+            set => Set(ref _TestDataPoints, value);
         }
         #endregion
 
