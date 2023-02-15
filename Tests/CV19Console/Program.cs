@@ -71,7 +71,9 @@ namespace CV19Console
             var russiaCovidData = GetData()
                 .First(data => data.Country.Equals("Russia", StringComparison.OrdinalIgnoreCase));
 
-            Console.WriteLine(string.Join("\r\n",GetDates().Zip(russiaCovidData.Count, (date, count) => $"{date.ToShortDateString()} {count}")));
+            Console.WriteLine(string.Join("\r\n",
+                GetDates()
+                .Zip(russiaCovidData.Count, (date, count) => $"{date.ToShortDateString()} {count}")));
            
                 
             Console.ReadLine();
