@@ -25,9 +25,6 @@ namespace CV19.ViewModels
                 data_points.Add(new DataPoint { XValue = x, YValue = y });
             }
             TestDataPoints = data_points;
-
-            ChangeTabIndexCommand = new LambdaCommand(OnChangeTabIndexCommandExecuted, CanChangeTabIndexCommandExecute);
-
         }
 
         #region Title : string - Заголовок окна
@@ -95,21 +92,14 @@ namespace CV19.ViewModels
         #endregion
 
         #region ChangeTabIndexCommand
-        //private ICommand _ChangeTabIndexCommand;
-        //public ICommand ChangeTabIndexCommand => _ChangeTabIndexCommand ??= new LambdaCommand(OnChangeTabIndexCommandExecute, CanChangeTabIndexCommandExecuted);
+        private ICommand _ChangeTabIndexCommand;
+        public ICommand ChangeTabIndexCommand => _ChangeTabIndexCommand ??= new LambdaCommand(OnChangeTabIndexCommandExecute, CanChangeTabIndexCommandExecuted);
 
-        //private bool CanChangeTabIndexCommandExecuted(object parameters) => _SelectedTabIndex >= 0;
-        //private void OnChangeTabIndexCommandExecute(object parameters)
-        //{
-        //    if ((parameters is null)) return;
-        //    SelectedTabIndex += Convert.ToInt32(parameters);
-        //}
-        public ICommand ChangeTabIndexCommand { get; }
-        private bool CanChangeTabIndexCommandExecute(object obj) => _SelectedTabIndex >= 0; // возвращение осуществляется истины, как результат, если свойство больше или равно нулю.
-        private void OnChangeTabIndexCommandExecuted(object obj)
+        private bool CanChangeTabIndexCommandExecuted(object parameters) => _SelectedTabIndex >= 0;
+        private void OnChangeTabIndexCommandExecute(object parameters)
         {
-            if ((obj is null)) return; // в случае, если внутри объекта, передаваемого, как аргумент, находится нулевое значение - метод прерывается.
-            SelectedTabIndex += Convert.ToInt32(obj); // в обратном итоге, помещаем во внутрь свойства, через конструктор, целочисленный элемент. Прерываем выполнение метода.
+            if ((parameters is null)) return;
+            SelectedTabIndex += Convert.ToInt32(parameters);
         }
         #endregion
         #endregion
