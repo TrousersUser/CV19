@@ -1,5 +1,4 @@
-﻿
-using CV19.ViewModels.Base;
+﻿using CV19.ViewModels.Base;
 using System.Windows;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
@@ -60,11 +59,25 @@ namespace CV19.ViewModels
 
         #region TestDataPoints : IEnumerable - Пробная информация, выводимая на график
         private IEnumerable<DataPoint> _TestDataPoints;
-
+        /// <summary>
+        /// Перечисление, включающее в себя объекты, хранящие координаты для построения графика.
+        /// </summary>
         public IEnumerable<DataPoint> TestDataPoints
         {
             get => _TestDataPoints;
             set => Set(ref _TestDataPoints, value);
+        }
+        #endregion
+
+        #region SelectedTabIndex : int - Выбранная вкладка, у объекта TabControl
+        private int _SelectedTabIndex = 0;
+        /// <summary>
+        /// Номер текущей вкладки, выбранной у объекта TabControl в представлении.
+        /// </summary>
+        public int SelectedTabIndex
+        {
+            get => _SelectedTabIndex;
+            set => Set(ref _SelectedTabIndex, value);
         }
         #endregion
 
