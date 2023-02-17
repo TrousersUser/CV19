@@ -70,7 +70,7 @@ namespace CV19.ViewModels
         #endregion
 
         #region SelectedTabIndex : int - Выбранная вкладка, у объекта TabControl
-        private int _SelectedTabIndex;
+        private int _SelectedTabIndex = 0;
         /// <summary>
         /// Номер текущей вкладки, выбранной у объекта TabControl в представлении.
         /// </summary>
@@ -79,7 +79,9 @@ namespace CV19.ViewModels
             get => _SelectedTabIndex;
             set => Set(ref _SelectedTabIndex, value);
         }
+
         #endregion
+
 
         #region Commands
         #region CloseApplicationCommand
@@ -102,6 +104,7 @@ namespace CV19.ViewModels
             SelectedTabIndex += Convert.ToInt32(parameters);
         }
         #endregion
+
         #endregion
     }
 }

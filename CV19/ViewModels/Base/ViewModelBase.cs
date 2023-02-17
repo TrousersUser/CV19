@@ -18,7 +18,7 @@ namespace CV19.ViewModels.Base
                 return false;
 
             field = value;
-            OnPropertyChanged();
+            OnPropertyChanged(PropertyName);
             return true;
         }
         //~Viewmodelbase()
@@ -32,7 +32,7 @@ namespace CV19.ViewModels.Base
         private bool _Disposed;
         protected virtual void Dispose(bool Disposing)
         {
-            if (!_Disposed || !Disposing) return;
+            if (!_Disposed | !Disposing) return;
             _Disposed = true;
             // Процесс освобождения неуправляемых ресурсов, возможно описать
         }
