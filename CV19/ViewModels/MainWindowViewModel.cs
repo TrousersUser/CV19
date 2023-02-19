@@ -32,6 +32,7 @@ namespace CV19.ViewModels
             TestDataPoints = data_points;
             #endregion
 
+            #region Group enumerable creating
             Random rand = new Random();
 
             int studentIndex = 1;
@@ -52,13 +53,24 @@ namespace CV19.ViewModels
                     Students = new ObservableCollection<Student>(students)
                 });
             Groups = new ObservableCollection<Group>(groups);
+        } 
+        #endregion
 
-
-            
-        }
         /*------------------------------------------------------------------------------------------------------------------------------- */
 
         public ObservableCollection<Group> Groups { get; }
+
+        #region SelectedGroup : Group - Выбранная группа
+        private Group _SelectedGroup;
+        /// <summary>
+        /// Свойство, указывающее на поле, хранящее выбранную в главном представлении группу, в качестве экземпляра класса Group.
+        /// </summary>
+        public Group SelectedGroup
+        {
+            get => _SelectedGroup;
+            set => Set(ref _SelectedGroup, value);
+        }
+        #endregion
 
         #region Title : string - Заголовок окна
         private string _Title = "Анализ статистики CV19";
@@ -114,6 +126,7 @@ namespace CV19.ViewModels
         }
 
         #endregion
+
 
         /*------------------------------------------------------------------------------------------------------------------------------- */
 
