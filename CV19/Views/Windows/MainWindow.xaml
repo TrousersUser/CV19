@@ -52,6 +52,36 @@
             <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Solid_Book" Height="13" Margin="0,0,5,0"
+                                         Foreground="Red"/>
+                        <TextBlock Text="Студенты"/>
+                        <!--<Image Source=""/>-->
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <!--<GridSplitter Grid.Column="0" Grid.RowSpan="2"
+                                  HorizontalAlignment="Right"
+                                  Width="4"
+                                  Grid.Row="0"/>-->
+                    <GroupBox Grid.Column="0" Header="Группы">
+                        <ListBox ItemsSource="{Binding Groups}" DisplayMemberPath="Name"/>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1"  Header="Студенты">
+                        <DataGrid>
+                            
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
+
+            </TabItem>
+
             <TabItem Header="График">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
@@ -64,50 +94,7 @@
                                     DataFieldY="YValue"/>
                 </oxy:Plot>
             </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Regular_File" Height="13" Margin="0,0,5,0"
-                                         Foreground="Red"/>
-                        <TextBlock Text="Вкладка 1"/>
-                        <!--<Image Source=""/>-->
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150*"/>
-                        <ColumnDefinition Width="635*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60*"/>
-                        <RowDefinition Height="325*"/>
-                    </Grid.RowDefinitions>
-
-                    <Rectangle Fill="Blue" 
-                               Stroke="Red" 
-                               StrokeThickness="3" 
-                               Margin="5,7"
-                               RadiusX="5" 
-                               RadiusY="7"
-                               Grid.Column="0"
-                               Grid.Row="0"/>
-                    <Ellipse Grid.Column="1"
-                             Grid.Row="0"
-                             Fill="Red"
-                             Stroke="Blue"
-                             StrokeThickness="3"
-                            >
-                        <Ellipse.InputBindings>
-                            <MouseBinding Command="{Binding CloseAppllicationCommand}" MouseAction="RightClick"/>
-                        </Ellipse.InputBindings>
-                    </Ellipse>
-                    <GridSplitter Grid.Column="0" Grid.RowSpan="2"
-                                  HorizontalAlignment="Right"
-                                  Width="4"
-                                  Grid.Row="0"/>
-                </Grid>
-
-            </TabItem>
+           
             <TabItem Header="Вкладка 3">
                 
             </TabItem>

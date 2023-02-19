@@ -5,19 +5,24 @@ using CV19.Infrastructure.Commands;
 using CV19.Models;
 using System.Collections.Generic;
 using System;
+using System.Collections.ObjectModel;
+using CV19.Models.Decanat;
+using System.Linq;
 
 namespace CV19.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
+        /*------------------------------------------------------------------------------------------------------------------------------- */
         public MainWindowViewModel()
         {
             //#region Commands
             //CloseAppllicationCommand = new LambdaCommand()
             //#endregion
 
-            var data_points = new List<DataPoint>((int)(360/0.1));
-            for(var x = 0d; x <= 360; x += 0.1)
+            #region GraphLogic
+            var data_points = new List<DataPoint>((int)(360 / 0.1));
+            for (var x = 0d; x <= 360; x += 0.1)
             {
                 const double to_rad = Math.PI / 180;
                 var y = Math.Sin(x * to_rad);
@@ -25,7 +30,35 @@ namespace CV19.ViewModels
                 data_points.Add(new DataPoint { XValue = x, YValue = y });
             }
             TestDataPoints = data_points;
+            #endregion
+
+            Random rand = new Random();
+
+            int studentIndex = 1;
+            var students = Enumerable.Range(1, 10)
+                .Select(i => new Student()
+                {
+                    Name = $"Имя {studentIndex}",
+                    Surname = $"Фамилия {studentIndex}",
+                    Patronymic = $"Отчество {studentIndex++}",
+                    Rating = rand.NextDouble(),
+                    Birthday = DateTime.Now
+                });
+
+            var groups = Enumerable.Range(1, 20)
+                .Select(i => new Group()
+                {
+                    Name = $"Группа {i}",
+                    Students = new ObservableCollection<Student>(students)
+                });
+            Groups = new ObservableCollection<Group>(groups);
+
+
+            
         }
+        /*------------------------------------------------------------------------------------------------------------------------------- */
+
+        public ObservableCollection<Group> Groups { get; }
 
         #region Title : string - Заголовок окна
         private string _Title = "Анализ статистики CV19";
@@ -82,6 +115,7 @@ namespace CV19.ViewModels
 
         #endregion
 
+        /*------------------------------------------------------------------------------------------------------------------------------- */
 
         #region Commands
         #region CloseApplicationCommand
@@ -104,7 +138,9 @@ namespace CV19.ViewModels
             SelectedTabIndex += Convert.ToInt32(parameters);
         }
         #endregion
-
         #endregion
+
+        /*------------------------------------------------------------------------------------------------------------------------------- */
+
     }
 }
