@@ -66,18 +66,26 @@
                         <ColumnDefinition Width="250"/>
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <!--<GridSplitter Grid.Column="0" Grid.RowSpan="2"
-                                  HorizontalAlignment="Right"
-                                  Width="4"
-                                  Grid.Row="0"/>-->
                     <GroupBox Grid.Column="0" Header="Группы">
                         <ListBox ItemsSource="{Binding Groups}"
+                                 SelectedIndex="0"
                                  DisplayMemberPath="Name"
                                  SelectedItem="{Binding SelectedGroup}"/>
                     </GroupBox>
-                    <GroupBox Grid.Column="1"  Header="{Binding SelectedGroup.Name, StringFormat='Студент группы {0}', FallbackValue='Студенты', TargetNullValue='Группа не выделена'}">
-                        <DataGrid>
-
+                    <GroupBox Grid.Column="1"  Header="{Binding SelectedGroup.Name, FallbackValue='Студенты', TargetNullValue='Группа не выделена'}">
+                        <DataGrid ItemsSource="{Binding SelectedGroup.Students}" 
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  ColumnWidth="*">
+                            
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Отчетство" Binding="{Binding Patronymic}"/>
+                                <DataGridTextColumn Header="Рейтинг" Binding="{Binding Rating}"/>
+                                <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat='dd.MM.yyyy'}"/>
+                                <!--<DataGridTextColumn Header="Группа" Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>  --><!--Применение относительного источника для информации-->
+                            </DataGrid.Columns>
                         </DataGrid>
                     </GroupBox>
                 </Grid>

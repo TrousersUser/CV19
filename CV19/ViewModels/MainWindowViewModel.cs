@@ -32,7 +32,7 @@ namespace CV19.ViewModels
             TestDataPoints = data_points;
             #endregion
 
-            #region Group enumerable creating
+            #region Student groups enumerable creating
             Random rand = new Random();
 
             int studentIndex = 1;
@@ -42,9 +42,9 @@ namespace CV19.ViewModels
                     Name = $"Имя {studentIndex}",
                     Surname = $"Фамилия {studentIndex}",
                     Patronymic = $"Отчество {studentIndex++}",
-                    Rating = rand.NextDouble(),
-                    Birthday = DateTime.Now
-                });
+                    Rating = Math.Round(rand.NextDouble(),3),
+                    Birthday = DateTime.Now 
+                }) ;
 
             var groups = Enumerable.Range(1, 20)
                 .Select(i => new Group()
@@ -53,8 +53,8 @@ namespace CV19.ViewModels
                     Students = new ObservableCollection<Student>(students)
                 });
             Groups = new ObservableCollection<Group>(groups);
-        } 
-        #endregion
+            #endregion
+        }
 
         /*------------------------------------------------------------------------------------------------------------------------------- */
 
