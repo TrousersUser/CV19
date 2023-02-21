@@ -54,11 +54,38 @@ namespace CV19.ViewModels
                 });
             Groups = new ObservableCollection<Group>(groups);
             #endregion
+
+            #region CompositeCollection filling
+            var newGroup = Groups[0];
+
+            var data_list = new List<object>()
+            {
+                "Dudes",
+                12,
+               newGroup,
+               newGroup.Students[0]
+            };
+
+            CompositeCollection = data_list.ToArray();
+            #endregion
         }
 
         /*------------------------------------------------------------------------------------------------------------------------------- */
 
         public ObservableCollection<Group> Groups { get; }
+        public object[] CompositeCollection { get; }
+
+        #region SelectedCompositeValue : object - Выбранное значение из композиции
+        private object _SelectedCompositeValue;
+        /// <summary>
+        /// Выделенный объект из массива с различными типами данных.
+        /// </summary>
+        public object SelectedCompositeValue
+        {
+            get => _SelectedCompositeValue;
+            set => Set(ref _SelectedCompositeValue, value);
+        }
+        #endregion
 
         #region SelectedGroup : Group - Выбранная группа
         private Group _SelectedGroup;
