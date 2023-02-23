@@ -166,7 +166,7 @@ namespace CV19.ViewModels
         private void OnCloseApplicationCommandExecuted(object parameters)
             => Application.Current.Shutdown();
         #endregion
-
+            
         #region ChangeTabIndexCommand
         private ICommand _ChangeTabIndexCommand;
         public ICommand ChangeTabIndexCommand => _ChangeTabIndexCommand ??= new LambdaCommand(OnChangeTabIndexCommandExecute, CanChangeTabIndexCommandExecuted);
@@ -176,6 +176,39 @@ namespace CV19.ViewModels
         {
             if ((parameters is null)) return;
             SelectedTabIndex += Convert.ToInt32(parameters);
+        }
+        #endregion
+        
+        #region CreateNewGroup
+        private ICommand _CreateNewGroupCommand;
+        public ICommand CreateNewGroupCommand => _CreateNewGroupCommand ??= new LambdaCommand(OnCreateNewGroupCommandExecute, CanCreateNewGroupCommandExecuted);
+        private bool CanCreateNewGroupCommandExecuted(object parameter) => true;
+        private void OnCreateNewGroupCommandExecute(object parameter)
+        {
+          int group_max_index = Groups.Count() + 1;
+          var new_group = new Group()
+          {
+                Name = $"Группа {group_max_index}",
+                Students = new ObservableCollection<Student>()
+          };
+
+          Groups.Add(new_group);
+        }
+        #endregion
+        #region DeleteGroupCommand
+        private ICommand _DeleteGroupCommand;
+        public ICommand DeleteGroupCommand => _DeleteGroupCommand ??= new LambdaCommand(OnDeleteGroupCommandExecute, CanDeleteGroupCommandExecuted);
+        private bool CanDeleteGroupCommandExecuted(object parameter) => 
+            parameter is Group group && Groups.Contains(group);
+        private void OnDeleteGroupCommandExecute(object parameter)
+        {
+            if (!(parameter is Group group)) return;
+            int index = Groups.IndexOf(group);
+            Groups.Remove(group);
+
+            if (index < Groups.Count)
+                SelectedGroup = Groups[index];
+
         }
         #endregion
         #endregion
