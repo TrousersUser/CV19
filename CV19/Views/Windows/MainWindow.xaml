@@ -19,10 +19,7 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
-    <!--<Window.Resources>
-        <vm:MainWindowViewModel x:Key="Comprado"/>
-    </Window.Resources>-->
-
+   
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
@@ -160,10 +157,10 @@
                                 </UniformGrid.Resources>
                                 <Button Content="Добавить"
                                         Command="{Binding CreateNewGroupCommand}" 
-                                        Style="{StaticResource ButtonStyle}"/>
+                                        Style="{StaticResource PrimaryBtn}"/>
                                 <Button Content="Удалить" 
                                         Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}"
-                                        Style="{StaticResource ButtonStyle}"
+                                        Style="{StaticResource DangerBtn}"
                                        />
                             </UniformGrid>
                             <ListBox ItemsSource="{Binding Groups}"
