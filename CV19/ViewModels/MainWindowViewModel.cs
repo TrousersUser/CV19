@@ -208,7 +208,7 @@ namespace CV19.ViewModels
 
             if (index < Groups.Count)
                 SelectedGroup = Groups[index];
-
+            
         }
         #endregion
         #endregion

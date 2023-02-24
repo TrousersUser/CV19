@@ -150,12 +150,21 @@
                             <UniformGrid DockPanel.Dock="Bottom"
                                          Rows="1" 
                                          Margin="0,3">
+                                <UniformGrid.Resources>
+                                    <Style x:Key="ButtonStyle"
+                                           TargetType="Button">
+                                        <Setter Property="Margin" Value="3.0"/>
+                                        <Setter Property="Padding" Value="3,5"/>
+                                        <Setter Property="Background" Value="White"/>
+                                    </Style>
+                                </UniformGrid.Resources>
                                 <Button Content="Добавить"
                                         Command="{Binding CreateNewGroupCommand}" 
-                                        Margin="0,0,3,0"/>
+                                        Style="{StaticResource ButtonStyle}"/>
                                 <Button Content="Удалить" 
                                         Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}"
-                                        />
+                                        Style="{StaticResource ButtonStyle}"
+                                       />
                             </UniformGrid>
                             <ListBox ItemsSource="{Binding Groups}"
                                      SelectedItem="{Binding SelectedGroup}">
