@@ -147,14 +147,14 @@
                             <UniformGrid DockPanel.Dock="Bottom"
                                          Rows="1" 
                                          Margin="0,3">
-                                <UniformGrid.Resources>
+                                <!--<UniformGrid.Resources>
                                     <Style x:Key="ButtonStyle"
                                            TargetType="Button">
                                         <Setter Property="Margin" Value="3.0"/>
                                         <Setter Property="Padding" Value="3,5"/>
                                         <Setter Property="Background" Value="White"/>
                                     </Style>
-                                </UniformGrid.Resources>
+                                </UniformGrid.Resources>-->
                                 <Button Content="Добавить"
                                         Command="{Binding CreateNewGroupCommand}" 
                                         Style="{StaticResource PrimaryBtn}"/>
