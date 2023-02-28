@@ -195,6 +195,7 @@ namespace CV19.ViewModels
           Groups.Add(new_group);
         }
         #endregion
+
         #region DeleteGroupCommand
         private ICommand _DeleteGroupCommand;
         public ICommand DeleteGroupCommand => _DeleteGroupCommand ??= new LambdaCommand(OnDeleteGroupCommandExecute, CanDeleteGroupCommandExecuted);

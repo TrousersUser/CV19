@@ -136,10 +136,19 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="decanat:Group">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Name}"/>
+                                                <TextBlock Text="{Binding Name}"
+                                                           x:Name="TextBlockName"
+                                                           />
                                                 <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов {0}]}"
                                                            Margin="3,0,0,0"/>
                                             </StackPanel>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Students.Count}"
+                                                         Value="0">
+                                                <Setter TargetName="TextBlockName" 
+                                                        Property="Foreground" Value="DarkRed"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                              </ListBox>
@@ -241,7 +250,7 @@
                                         <ColorAnimation Storyboard.TargetName="ButtonBrush"
                                                         Storyboard.TargetProperty="Color"
                                                         To="Orange"
-                                                        Duration="0:0:0.1"/>
+                                                        Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger.Actions>
@@ -254,7 +263,7 @@
                                         <ColorAnimation Storyboard.TargetName="ButtonBrush"
                                                         Storyboard.TargetProperty="Color"
                                                         To="White"
-                                                        Duration="0:0:0.3"/>
+                                                        Duration="0:0:0.5"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger.Actions>
