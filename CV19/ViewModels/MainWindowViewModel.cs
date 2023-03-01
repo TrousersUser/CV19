@@ -5,19 +5,24 @@ using CV19.Infrastructure.Commands;
 using CV19.Models;
 using System.Collections.Generic;
 using System;
+using System.Collections.ObjectModel;
+using CV19.Models.Decanat;
+using System.Linq;
 
 namespace CV19.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
+        /*------------------------------------------------------------------------------------------------------------------------------- */
         public MainWindowViewModel()
         {
             //#region Commands
             //CloseAppllicationCommand = new LambdaCommand()
             //#endregion
 
-            var data_points = new List<DataPoint>((int)(360/0.1));
-            for(var x = 0d; x <= 360; x += 0.1)
+            #region GraphLogic
+            var data_points = new List<DataPoint>((int)(360 / 0.1));
+            for (var x = 0d; x <= 360; x += 0.1)
             {
                 const double to_rad = Math.PI / 180;
                 var y = Math.Sin(x * to_rad);
@@ -25,7 +30,74 @@ namespace CV19.ViewModels
                 data_points.Add(new DataPoint { XValue = x, YValue = y });
             }
             TestDataPoints = data_points;
+            #endregion
+
+            #region Student groups enumerable creating
+            Random rand = new Random();
+
+            int studentIndex = 1;
+            var students = Enumerable.Range(1, 10)
+                .Select(i => new Student()
+                {
+                    Name = $"Имя {studentIndex}",
+                    Surname = $"Фамилия {studentIndex}",
+                    Patronymic = $"Отчество {studentIndex++}",
+                    Rating = Math.Round(rand.NextDouble(),3),
+                    Birthday = DateTime.Now 
+                }) ;
+
+            var groups = Enumerable.Range(1, 20)
+                .Select(i => new Group()
+                {
+                    Name = $"Группа {i}",
+                    Students = new ObservableCollection<Student>(students)
+                });
+            Groups = new ObservableCollection<Group>(groups);
+            #endregion
+
+            #region CompositeCollection filling
+            var newGroup = Groups[0];
+
+            var data_list = new List<object>()
+            {
+                "Dudes",
+                12,
+               newGroup,
+               newGroup.Students[0]
+            };
+
+            CompositeCollection = data_list.ToArray();
+            #endregion
         }
+
+        /*------------------------------------------------------------------------------------------------------------------------------- */
+
+        public ObservableCollection<Group> Groups { get; }
+        public object[] CompositeCollection { get; }
+
+        #region SelectedCompositeValue : object - Выбранное значение из композиции
+        private object _SelectedCompositeValue;
+        /// <summary>
+        /// Выделенный объект из массива с различными типами данных.
+        /// </summary>
+        public object SelectedCompositeValue
+        {
+            get => _SelectedCompositeValue;
+            set => Set(ref _SelectedCompositeValue, value);
+        }
+        #endregion
+
+        #region SelectedGroup : Group - Выбранная группа
+        private Group _SelectedGroup;
+        /// <summary>
+        /// Свойство, указывающее на поле, хранящее выбранную в главном представлении группу, в качестве экземпляра класса Group.
+        /// </summary>
+        public Group SelectedGroup
+        {
+            get => _SelectedGroup;
+            set => Set(ref _SelectedGroup, value);
+        }
+        #endregion
 
         #region Title : string - Заголовок окна
         private string _Title = "Анализ статистики CV19";
@@ -83,6 +155,8 @@ namespace CV19.ViewModels
         #endregion
 
 
+        /*------------------------------------------------------------------------------------------------------------------------------- */
+
         #region Commands
         #region CloseApplicationCommand
         private ICommand _CloseAppllicationCommand;
@@ -92,7 +166,7 @@ namespace CV19.ViewModels
         private void OnCloseApplicationCommandExecuted(object parameters)
             => Application.Current.Shutdown();
         #endregion
-
+            
         #region ChangeTabIndexCommand
         private ICommand _ChangeTabIndexCommand;
         public ICommand ChangeTabIndexCommand => _ChangeTabIndexCommand ??= new LambdaCommand(OnChangeTabIndexCommandExecute, CanChangeTabIndexCommandExecuted);
@@ -104,7 +178,43 @@ namespace CV19.ViewModels
             SelectedTabIndex += Convert.ToInt32(parameters);
         }
         #endregion
+        
+        #region CreateNewGroup
+        private ICommand _CreateNewGroupCommand;
+        public ICommand CreateNewGroupCommand => _CreateNewGroupCommand ??= new LambdaCommand(OnCreateNewGroupCommandExecute, CanCreateNewGroupCommandExecuted);
+        private bool CanCreateNewGroupCommandExecuted(object parameter) => true;
+        private void OnCreateNewGroupCommandExecute(object parameter)
+        {
+          int group_max_index = Groups.Count() + 1;
+          var new_group = new Group()
+          {
+                Name = $"Группа {group_max_index}",
+                Students = new ObservableCollection<Student>()
+          };
 
+          Groups.Add(new_group);
+        }
         #endregion
+
+        #region DeleteGroupCommand
+        private ICommand _DeleteGroupCommand;
+        public ICommand DeleteGroupCommand => _DeleteGroupCommand ??= new LambdaCommand(OnDeleteGroupCommandExecute, CanDeleteGroupCommandExecuted);
+        private bool CanDeleteGroupCommandExecuted(object parameter) => 
+            parameter is Group group && Groups.Contains(group);
+        private void OnDeleteGroupCommandExecute(object parameter)
+        {
+            if (!(parameter is Group group)) return;
+            int index = Groups.IndexOf(group);
+            Groups.Remove(group);
+
+            if (index < Groups.Count)
+                SelectedGroup = Groups[index];
+            
+        }
+        #endregion
+        #endregion
+
+        /*------------------------------------------------------------------------------------------------------------------------------- */
+
     }
 }

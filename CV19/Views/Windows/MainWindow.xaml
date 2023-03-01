@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:vm="clr-namespace:CV19.ViewModels"
@@ -17,10 +19,7 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
-    <!--<Window.Resources>
-        <vm:MainWindowViewModel x:Key="Comprado"/>
-    </Window.Resources>-->
-
+   
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
@@ -52,6 +51,150 @@
             <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Разнородные данные">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0">
+                        <GroupBox.Header>
+                            <TextBlock Text="Различная информация"/>
+                        </GroupBox.Header>
+                        <GroupBox.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="../../Resources/DataTemplates/CompositeListItemsDataTemplate.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </GroupBox.Resources>
+                        <ListBox ItemsSource="{Binding CompositeCollection}" 
+                             SelectedItem="{Binding SelectedCompositeValue}">
+                            <!--<ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>-->
+                        </ListBox>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1">
+                        <GroupBox.Header>
+                            <TextBlock Text="Выделенный из списка элемент:"/>
+                        </GroupBox.Header>
+                        <GroupBox.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="../../Resources/DataTemplates/CompositeItemsControlDataTemplates.xaml"/>
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </GroupBox.Resources>
+                        <ContentControl Content="{Binding SelectedCompositeValue}"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Solid_Book" Height="13" Margin="0,0,5,0"
+                                         Foreground="LightBlue"/>
+                        <TextBlock Text="Студенты"/>
+                        <!--<Image Source=""/>-->
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0" Header="Группы">
+                        <DockPanel>
+                            <UniformGrid DockPanel.Dock="Bottom"
+                                         Rows="1" 
+                                         Margin="0,3">
+                                <!--<UniformGrid.Resources>
+                                    <Style x:Key="ButtonStyle"
+                                           TargetType="Button">
+                                        <Setter Property="Margin" Value="3.0"/>
+                                        <Setter Property="Padding" Value="3,5"/>
+                                        <Setter Property="Background" Value="White"/>
+                                    </Style>
+                                </UniformGrid.Resources>-->
+                                <Button Command="{Binding CreateNewGroupCommand}" 
+                                        Style="{StaticResource CheckBtnStyle}"
+                                        Content="Добавить"
+                                        Padding="0,7">
+                                    
+                                </Button>
+                                <Button Content="Удалить" 
+                                        Command="{Binding DeleteGroupCommand}"
+                                        CommandParameter="{Binding SelectedGroup}"
+                                        Style="{StaticResource RemoveBtnStyle}"
+                                       />
+                            </UniformGrid>
+                            <ListBox ItemsSource="{Binding Groups}"
+                                     SelectedItem="{Binding SelectedGroup}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="decanat:Group">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Name}"
+                                                           x:Name="TextBlockName"
+                                                           />
+                                                <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов {0}]}"
+                                                           Margin="3,0,0,0"/>
+                                            </StackPanel>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Students.Count}"
+                                                         Value="0">
+                                                <Setter TargetName="TextBlockName" 
+                                                        Property="Foreground" Value="DarkRed"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                             </ListBox>
+                        </DockPanel>
+                    </GroupBox>
+
+                    <GroupBox Grid.Column="1"  Header="{Binding SelectedGroup.Name, FallbackValue='Студенты', TargetNullValue='Группа не выделена'}">
+                        <DataGrid ItemsSource="{Binding SelectedGroup.Students}" 
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  GridLinesVisibility="Vertical"
+                                  VerticalGridLinesBrush="DarkGray"
+                                  AlternatingRowBackground="LightBlue"
+                                  >
+                            <!--HorizontalGridLinesBrush="Transparent"-->
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Name}"  IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Отчетство" Binding="{Binding Patronymic}"  IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Рейтинг" Binding="{Binding Rating}"  IsReadOnly="True"/>
+                                <DataGridTemplateColumn Header="Дата рождения">
+                                    <!--<DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate DataType="decanat:Student">
+                                            <DatePicker SelectedDate="{Binding Birthday}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>-->
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate DataType="decanat:Student">
+                                            <TextBlock Text="{Binding Birthday, StringFormat='dd.MM.yyyy'}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate DataType="decanat:Student">
+                                            <DatePicker SelectedDate="{Binding Birthday}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Заметки" Binding="{Binding Description}" Width="*"/>
+                                <!--<DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat='dd.MM.yyyy'}"/>-->
+                                <!--<DataGridTextColumn Header="Группа" Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>  -->
+                                <!--Применение относительного источника для информации-->
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="График">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
@@ -64,52 +207,69 @@
                                     DataFieldY="YValue"/>
                 </oxy:Plot>
             </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Regular_File" Height="13" Margin="0,0,5,0"
-                                         Foreground="Red"/>
-                        <TextBlock Text="Вкладка 1"/>
-                        <!--<Image Source=""/>-->
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150*"/>
-                        <ColumnDefinition Width="635*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60*"/>
-                        <RowDefinition Height="325*"/>
-                    </Grid.RowDefinitions>
-
-                    <Rectangle Fill="Blue" 
-                               Stroke="Red" 
-                               StrokeThickness="3" 
-                               Margin="5,7"
-                               RadiusX="5" 
-                               RadiusY="7"
-                               Grid.Column="0"
-                               Grid.Row="0"/>
-                    <Ellipse Grid.Column="1"
-                             Grid.Row="0"
-                             Fill="Red"
-                             Stroke="Blue"
-                             StrokeThickness="3"
-                            >
-                        <Ellipse.InputBindings>
-                            <MouseBinding Command="{Binding CloseAppllicationCommand}" MouseAction="RightClick"/>
-                        </Ellipse.InputBindings>
-                    </Ellipse>
-                    <GridSplitter Grid.Column="0" Grid.RowSpan="2"
-                                  HorizontalAlignment="Right"
-                                  Width="4"
-                                  Grid.Row="0"/>
-                </Grid>
-
-            </TabItem>
             <TabItem Header="Вкладка 3">
-                
+                <Button Content="Text"
+                        Width="120"
+                        Height="80"
+                        HorizontalContentAlignment="Center"
+                        Margin="20,20"
+                        RenderTransformOrigin="0.5,0.5"
+                        Style="{StaticResource CustomButtonStyle}"
+                        >
+                    <Button.Background>
+                        <SolidColorBrush x:Name="ButtonBrush" Color="White"/>
+                    </Button.Background>
+
+                    <Button.RenderTransform>
+                        <RotateTransform Angle="0"
+                                         x:Name="rotateBtnTransform"/>
+                    </Button.RenderTransform>
+                    
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click"
+                                      >
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="rotateBtnTransform"
+                                                         Storyboard.TargetProperty="Angle"
+                                                         From="0"
+                                                         By="0.1"
+                                                         To="360"
+                                                         Duration="0:0:0.5"
+                                                         AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                         
+                        <EventTrigger RoutedEvent="Button.MouseEnter">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="ButtonBrush"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="Orange"
+                                                        Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                        
+                        <EventTrigger RoutedEvent="Button.MouseLeave">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="ButtonBrush"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="White"
+                                                        Duration="0:0:0.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
             </TabItem>
         </TabControl>
     </DockPanel>
