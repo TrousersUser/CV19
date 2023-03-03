@@ -50,6 +50,7 @@
             </StatusBarItem>
             <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
+        
         <TabControl SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem>
                 <TabItem.Header>
@@ -67,6 +68,9 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Группы">
                         <DockPanel>
+                            <DockPanel.Resources>
+                                <CollectionViewSource x:Key="GroupsCollection" Source="{Binding Groups}"/>
+                            </DockPanel.Resources>
                             <DockPanel DockPanel.Dock="Top" Margin="0,3">
                                 <fa:ImageAwesome Height="12"
                                                  Icon="Solid_Search"
@@ -96,7 +100,7 @@
                                         Style="{StaticResource RemoveBtnStyle}"
                                        />
                             </UniformGrid>
-                            <ListBox ItemsSource="{Binding Groups}"
+                            <ListBox ItemsSource="{Binding Source={StaticResource GroupsCollection}}"
                                      SelectedItem="{Binding SelectedGroup}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="decanat:Group">
