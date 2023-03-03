@@ -8,6 +8,7 @@ using System;
 using System.Collections.ObjectModel;
 using CV19.Models.Decanat;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace CV19.ViewModels
 {
@@ -74,6 +75,15 @@ namespace CV19.ViewModels
 
         public ObservableCollection<Group> Groups { get; }
         public object[] CompositeCollection { get; }
+        public IEnumerable<Student> Students => Enumerable.Range(0, App.IsDesignMode ? 10 : 10_000)
+            .Select(number => new Student()
+            {
+                Name = $"Имя {number}",
+                Birthday = DateTime.Now,
+                Surname = $"Фамилия {number}",
+                Rating = 0,
+            });
+
 
         #region SelectedCompositeValue : object - Выбранное значение из композиции
         private object _SelectedCompositeValue;

@@ -19,7 +19,8 @@ namespace CV19
             if (filterText.Length == 0) return;
 
             if (group.Name.Contains(filterText, System.StringComparison.OrdinalIgnoreCase)) return;
-            else if (group.Description != null && group.Description.Contains(filterText, System.StringComparison.OrdinalIgnoreCase)) return;
+            else if (group.Description != null &&
+                group.Description.Contains(filterText, System.StringComparison.OrdinalIgnoreCase)) return;
 
             e.Accepted = false;
         }
