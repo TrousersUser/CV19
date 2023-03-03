@@ -51,47 +51,6 @@
             <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedTabIndex}">
-            <TabItem Header="Разнородные данные">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="0">
-                        <GroupBox.Header>
-                            <TextBlock Text="Различная информация"/>
-                        </GroupBox.Header>
-                        <GroupBox.Resources>
-                            <ResourceDictionary>
-                                <ResourceDictionary.MergedDictionaries>
-                                    <ResourceDictionary Source="../../Resources/DataTemplates/CompositeListItemsDataTemplate.xaml"/>
-                                </ResourceDictionary.MergedDictionaries>
-                            </ResourceDictionary>
-                        </GroupBox.Resources>
-                        <ListBox ItemsSource="{Binding CompositeCollection}" 
-                             SelectedItem="{Binding SelectedCompositeValue}">
-                            <!--<ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>-->
-                        </ListBox>
-                    </GroupBox>
-                    <GroupBox Grid.Column="1">
-                        <GroupBox.Header>
-                            <TextBlock Text="Выделенный из списка элемент:"/>
-                        </GroupBox.Header>
-                        <GroupBox.Resources>
-                            <ResourceDictionary>
-                                <ResourceDictionary.MergedDictionaries>
-                                    <ResourceDictionary Source="../../Resources/DataTemplates/CompositeItemsControlDataTemplates.xaml"/>
-                                </ResourceDictionary.MergedDictionaries>
-                            </ResourceDictionary>
-                        </GroupBox.Resources>
-                        <ContentControl Content="{Binding SelectedCompositeValue}"/>
-                    </GroupBox>
-                </Grid>
-            </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -206,70 +165,6 @@
                                     DataFieldX="XValue"
                                     DataFieldY="YValue"/>
                 </oxy:Plot>
-            </TabItem>
-            <TabItem Header="Вкладка 3">
-                <Button Content="Text"
-                        Width="120"
-                        Height="80"
-                        HorizontalContentAlignment="Center"
-                        Margin="20,20"
-                        RenderTransformOrigin="0.5,0.5"
-                        Style="{StaticResource CustomButtonStyle}"
-                        >
-                    <Button.Background>
-                        <SolidColorBrush x:Name="ButtonBrush" Color="White"/>
-                    </Button.Background>
-
-                    <Button.RenderTransform>
-                        <RotateTransform Angle="0"
-                                         x:Name="rotateBtnTransform"/>
-                    </Button.RenderTransform>
-                    
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click"
-                                      >
-                            <EventTrigger.Actions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="rotateBtnTransform"
-                                                         Storyboard.TargetProperty="Angle"
-                                                         From="0"
-                                                         By="0.1"
-                                                         To="360"
-                                                         Duration="0:0:0.5"
-                                                         AutoReverse="True"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger.Actions>
-                        </EventTrigger>
-                         
-                        <EventTrigger RoutedEvent="Button.MouseEnter">
-                            <EventTrigger.Actions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="ButtonBrush"
-                                                        Storyboard.TargetProperty="Color"
-                                                        To="Orange"
-                                                        Duration="0:0:0.2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger.Actions>
-                        </EventTrigger>
-                        
-                        <EventTrigger RoutedEvent="Button.MouseLeave">
-                            <EventTrigger.Actions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="ButtonBrush"
-                                                        Storyboard.TargetProperty="Color"
-                                                        To="White"
-                                                        Duration="0:0:0.5"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger.Actions>
-                        </EventTrigger>
-                    </Button.Triggers>
-                </Button>
             </TabItem>
         </TabControl>
     </DockPanel>
