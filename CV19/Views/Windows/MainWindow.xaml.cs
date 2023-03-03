@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Text.RegularExpressions;
-using System.Windows;
+﻿using System.Windows;
 
 namespace CV19
 {
