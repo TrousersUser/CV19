@@ -73,6 +73,9 @@
                                         BorderThickness="1"
                                         CornerRadius="3"
                                         Padding="3">
+                                    <Border.CacheMode>
+                                        <BitmapCache/>
+                                    </Border.CacheMode>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Surname}"/>
                                         <TextBlock Text="{Binding Name}"/>
