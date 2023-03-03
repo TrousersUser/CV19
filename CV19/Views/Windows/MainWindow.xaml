@@ -69,13 +69,16 @@
                     <GroupBox Grid.Column="0" Header="Группы">
                         <DockPanel>
                             <DockPanel.Resources>
-                                <CollectionViewSource x:Key="GroupsCollection" Source="{Binding Groups}"/>
+                                <CollectionViewSource x:Key="GroupsCollection" 
+                                                      Source="{Binding Groups}"
+                                                      Filter="CollectionViewSource_Filter"/>
                             </DockPanel.Resources>
                             <DockPanel DockPanel.Dock="Top" Margin="0,3">
                                 <fa:ImageAwesome Height="12"
                                                  Icon="Solid_Search"
                                                  Margin="3,0"/>
-                                <TextBox/>
+                                <TextBox Name="GroupNameFilterText"
+                                         TextChanged="GroupNameFilterText_TextChanged"/>
                             </DockPanel>
                             <UniformGrid DockPanel.Dock="Bottom"
                                          Rows="1" 
