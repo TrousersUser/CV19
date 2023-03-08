@@ -58,10 +58,15 @@
                          Width="200"
                          Margin="30"
                          ItemsSource="{Binding Students}"
-                         VirtualizingPanel.IsContainerVirtualizable="True"
                          VirtualizingPanel.IsVirtualizing="True"
-                         VirtualizingPanel.VirtualizationMode="Standard"
+                         VirtualizingPanel.IsContainerVirtualizable="True"
+                         VirtualizingPanel.VirtualizationMode="Recycling"
                          >
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -74,7 +79,7 @@
                                         CornerRadius="3"
                                         Padding="3">
                                     <Border.CacheMode>
-                                        <BitmapCache/>
+                                        <BitmapCache RenderAtScale="1"/>
                                     </Border.CacheMode>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Surname}"/>
@@ -109,7 +114,8 @@
                                                       Source="{Binding Groups}"
                                                       Filter="CollectionViewSource_Filter"/>
                             </DockPanel.Resources>
-                            <DockPanel DockPanel.Dock="Top" Margin="0,3">
+                            <DockPanel DockPanel.Dock="Top" 
+                                       Margin="0,3">
                                 <fa:ImageAwesome Height="12"
                                                  Icon="Solid_Search"
                                                  Margin="3,0"/>
@@ -187,7 +193,13 @@
                                   GridLinesVisibility="Vertical"
                                   VerticalGridLinesBrush="DarkGray"
                                   AlternatingRowBackground="LightBlue"
+                                  EnableRowVirtualization="True"
                                   >
+                                <DataGrid.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </DataGrid.ItemsPanel>
                                 <!--HorizontalGridLinesBrush="Transparent"-->
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}" IsReadOnly="True"/>
