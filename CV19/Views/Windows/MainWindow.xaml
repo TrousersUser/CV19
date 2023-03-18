@@ -110,17 +110,17 @@
                     <GroupBox Grid.Column="0" Header="Группы">
                         <DockPanel>
                             <DockPanel.Resources>
-                                <CollectionViewSource x:Key="GroupsCollection" 
+                                <!--<CollectionViewSource x:Key="GroupsCollection" 
                                                       Source="{Binding Groups}"
-                                                      Filter="CollectionViewSource_Filter"/>
+                                                      Filter="CollectionViewSource_Filter"/>-->
                             </DockPanel.Resources>
                             <DockPanel DockPanel.Dock="Top" 
                                        Margin="0,3">
                                 <fa:ImageAwesome Height="12"
                                                  Icon="Solid_Search"
                                                  Margin="3,0"/>
-                                <TextBox Name="GroupNameFilterText"
-                                         TextChanged="GroupNameFilterText_TextChanged"/>
+                                <TextBox Text="{Binding GroupsFilterText, UpdateSourceTrigger = PropertyChanged}"
+                                       />
                             </DockPanel>
                             <UniformGrid DockPanel.Dock="Bottom"
                                          Rows="1" 
@@ -136,16 +136,15 @@
                                 <Button Command="{Binding CreateNewGroupCommand}" 
                                         Style="{StaticResource CheckBtnStyle}"
                                         Content="Добавить"
-                                        Padding="0,7">
-                                    
-                                </Button>
+                                        Padding="0,7"/>
+
                                 <Button Content="Удалить" 
                                         Command="{Binding DeleteGroupCommand}"
                                         CommandParameter="{Binding SelectedGroup}"
                                         Style="{StaticResource RemoveBtnStyle}"
                                        />
                             </UniformGrid>
-                            <ListBox ItemsSource="{Binding Source={StaticResource GroupsCollection}}"
+                            <ListBox ItemsSource="{Binding GroupList}"
                                      SelectedItem="{Binding SelectedGroup}"
                                      VirtualizingPanel.IsContainerVirtualizable="True"
                                      VirtualizingPanel.IsVirtualizing="True"
@@ -184,10 +183,10 @@
                                 <fa:ImageAwesome Height="12"
                                                  Icon="Solid_Bell"
                                                  Margin="3,0"/>
-                                <TextBox/>
+                                <TextBox Text="{Binding StudentFilterText, UpdateSourceTrigger = PropertyChanged}"/>
                             </DockPanel>
                             <DataGrid DockPanel.Dock="Bottom"
-                                  ItemsSource="{Binding SelectedGroup.Students}" 
+                                  ItemsSource="{Binding SelectedGroupStudents}" 
                                   AutoGenerateColumns="False"
                                   CanUserAddRows="False"
                                   GridLinesVisibility="Vertical"
@@ -195,11 +194,15 @@
                                   AlternatingRowBackground="LightBlue"
                                   EnableRowVirtualization="True"
                                   >
-                                <DataGrid.ItemsPanel>
+                                <!--<DataGrid.GroupStyle>
+                                    <GroupStyle/>
+                                </DataGrid.GroupStyle>-->
+                                
+                                <!--<DataGrid.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
                                     </ItemsPanelTemplate>
-                                </DataGrid.ItemsPanel>
+                                </DataGrid.ItemsPanel>-->
                                 <!--HorizontalGridLinesBrush="Transparent"-->
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}" IsReadOnly="True"/>
