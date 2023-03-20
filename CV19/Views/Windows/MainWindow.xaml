@@ -148,7 +148,7 @@
                                      SelectedItem="{Binding SelectedGroup}"
                                      VirtualizingPanel.IsContainerVirtualizable="True"
                                      VirtualizingPanel.IsVirtualizing="True"
-                                     VirtualizingPanel.VirtualizationMode="Recycling"
+                                     VirtualizingPanel.VirtualizationMode="Recycling"                                     
                                      >
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>

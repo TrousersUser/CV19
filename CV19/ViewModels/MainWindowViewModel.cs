@@ -36,8 +36,9 @@ namespace CV19.ViewModels
             _SelectedGroupStudents.Filter += OnStudentsFiltred;
             _GroupList = SourceCreating();
             _GroupList.Filter += OnGroupsFiltred;
+            _GroupList.SortDescriptions.Add(new SortDescription("Name",ListSortDirection.Descending));
 
-
+            
             //_SelectedGroupStudents.SortDescriptions.Add
             //    (
             //     new SortDescription("Name", ListSortDirection.Descending)
