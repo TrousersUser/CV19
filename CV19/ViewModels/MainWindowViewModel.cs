@@ -47,6 +47,56 @@ namespace CV19.ViewModels
         }
 
         /*------------------------------------------------------------------------------------------------------------------------------- */
+        public DirectoryViewModel DriveRootDir { get; } = new DirectoryViewModel(@"C:\");
+
+        #region SeletedDirectory : DirectoryViewModel - Выбранный каталог/директория из фаловой системы.
+        /// <summary>
+        /// Свойство, возвращающее ссылку на экземпляр класса DirectoryViewMode, что является моделью представления,
+        /// хранящей информацию об конкретном каталоге.
+        /// </summary>
+        private DirectoryViewModel _SelectedDirectory;
+        public DirectoryViewModel SelectedDirectory
+        {
+            get => _SelectedDirectory;
+            set => Set(ref _SelectedDirectory, value);
+        }
+        #endregion
+
+
+        #region object[] : CompositeCollection - Массив, включающий информацию с различными типами - значимыми, ссылочными.
+        private object[] _CompositeCollection;
+        /// <summary>
+        /// Массив, включающий информацию с различными типами - значимыми, ссылочными.
+        /// </summary>
+        public object[] CompositeCollection => _CompositeCollection ??= CompositeCollectionFilling();
+        private object[] CompositeCollectionFilling()
+        {
+            var newGroup = Groups[0];
+
+            var data_list = new List<object>()
+            {
+                "Dudes",
+                12,
+               newGroup,
+               newGroup.Students[0]
+            };
+
+            return data_list.ToArray();
+        }
+        #endregion
+
+        #region SelectedCompositeValue : object - Выбранное значение из композиции
+        private object _SelectedCompositeValue;
+        /// <summary>
+        /// Выделенный объект из массива с различными типами данных.
+        /// </summary>
+        public object SelectedCompositeValue
+        {
+            get => _SelectedCompositeValue;
+            set => Set(ref _SelectedCompositeValue, value);
+        }
+        #endregion
+
 
         #region ObservableCollection<Group> : Groups - Поле, возвращающее коллекцию наблюдаемую, с сущностями - экземплярами класса Group
         private ObservableCollection<Group> _Groups;
@@ -77,33 +127,10 @@ namespace CV19.ViewModels
                 });
             ObservableCollection<Group> groupsCollection = new ObservableCollection<Group>(groups);
 
-           
+
             return groupsCollection;
         }
         #endregion
-
-        #region object[] : CompositeCollection - Массив, включающий информацию с различными типами - значимыми, ссылочными.
-        private object[] _CompositeCollection;
-        /// <summary>
-        /// Массив, включающий информацию с различными типами - значимыми, ссылочными.
-        /// </summary>
-        public object[] CompositeCollection => _CompositeCollection ??= CompositeCollectionFilling();
-        private object[] CompositeCollectionFilling()
-        {
-            var newGroup = Groups[0];
-
-            var data_list = new List<object>()
-            {
-                "Dudes",
-                12,
-               newGroup,
-               newGroup.Students[0]
-            };
-
-            return data_list.ToArray();
-        }
-        #endregion
-
 
         #region Groups : ICollectionView - Свойство, возвращающее объект-список, включающий в себя экземпляры сущности Group
         /// <summary>
@@ -116,7 +143,7 @@ namespace CV19.ViewModels
             toReturn.Source = Groups;
             return toReturn;
         }
-        public ICollectionView GroupList => _GroupList?.View;
+        public ICollectionView? GroupList => _GroupList?.View;
         #endregion
 
         #region GroupsFilterText : string - Свойство, возвращающее данные, вводимые в строку для фильтрации.
@@ -166,6 +193,24 @@ namespace CV19.ViewModels
         }
         #endregion
 
+        #region SelectedGroup : Group - Выбранная группа
+        private Group _SelectedGroup;
+        /// <summary>
+        /// Свойство, указывающее на поле, хранящее выбранную в главном представлении группу, в качестве экземпляра класса Group.
+        /// </summary>
+        public Group SelectedGroup
+        {
+            get => _SelectedGroup;
+            set
+            {
+                if (!Set(ref _SelectedGroup, value)) return;
+                _SelectedGroupStudents.Source = value?.Students;
+                OnPropertyChanged(nameof(SelectedGroupStudents));
+            }
+
+        }
+        #endregion
+
 
         #region SelectedGroupStudents : ICollectionView  - Свойство, возвращающее объект в виде исходных данных, в лице коллекции.
         /// <summary>
@@ -173,10 +218,9 @@ namespace CV19.ViewModels
         /// Экземпляр класса, реализующего интерфейс IView.
         /// </summary>
         private readonly CollectionViewSource _SelectedGroupStudents = new CollectionViewSource();
-        public ICollectionView SelectedGroupStudents => _SelectedGroupStudents?.View;
+        public ICollectionView? SelectedGroupStudents => _SelectedGroupStudents?.View;
         #endregion
         
-
         #region OnStudentsFiltred : void - Метод, подключемый к событию Filter, у экземпляра класса CollectionViewSource(ICollectionView)
         /// <summary>
         /// Метод, соответствующий сигнатуре делегата FilterEventHandler.
@@ -229,8 +273,7 @@ namespace CV19.ViewModels
         }
         #endregion
 
-
-        #region IEnumerable : Students - Перечисление, возвращающее экземпляры класса Students
+        #region Students : IEnumerable<Student> - Перечисление, возвращающее экземпляры класса Students
         public IEnumerable<Student> Students => Enumerable.Range(0, App.IsDesignMode ? 10 : 10_000)
            .Select<int, Student>(number => new Student()
            {
@@ -239,36 +282,6 @@ namespace CV19.ViewModels
                Surname = $"Фамилия {number}",
                Rating = 0,
            });
-        #endregion
-
-        #region SelectedGroup : Group - Выбранная группа
-        private Group _SelectedGroup;
-        /// <summary>
-        /// Свойство, указывающее на поле, хранящее выбранную в главном представлении группу, в качестве экземпляра класса Group.
-        /// </summary>
-        public Group SelectedGroup
-        {
-            get => _SelectedGroup;
-            set
-            {
-                if (!Set(ref _SelectedGroup, value)) return;
-                _SelectedGroupStudents.Source = value?.Students;
-                OnPropertyChanged(nameof(SelectedGroupStudents));
-            }
-                
-        }
-        #endregion
-
-        #region SelectedCompositeValue : object - Выбранное значение из композиции
-        private object _SelectedCompositeValue;
-        /// <summary>
-        /// Выделенный объект из массива с различными типами данных.
-        /// </summary>
-        public object SelectedCompositeValue
-        {
-            get => _SelectedCompositeValue;
-            set => Set(ref _SelectedCompositeValue, value);
-        }
         #endregion
 
 

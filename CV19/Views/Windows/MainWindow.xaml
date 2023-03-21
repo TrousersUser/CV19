@@ -19,7 +19,6 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
-   
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
@@ -194,6 +193,7 @@
                                   AlternatingRowBackground="LightBlue"
                                   EnableRowVirtualization="True"
                                   >
+                                
                                 <!--<DataGrid.GroupStyle>
                                     <GroupStyle/>
                                 </DataGrid.GroupStyle>-->
@@ -247,6 +247,62 @@
                                     DataFieldX="XValue"
                                     DataFieldY="YValue"/>
                 </oxy:Plot>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Regular_File" Foreground="BlueViolet"
+                                         Margin="0,2,5,0"
+                                         Height="13"/>
+                        <TextBlock Text="Файловая система"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0" Header="Директории">
+                        <!--<ListBox ItemsSource="{Binding DriveRootDir.DirectoryItems}"
+                                 SelectedItem="{Binding SelectedDirectory}"
+                                 SelectedIndex="0">
+                            
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DirectoryViewModel}">
+                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+
+                        </ListBox>-->
+                        <TreeView ItemsSource="{Binding DriveRootDir.DirectoryItems}"
+                                  >
+                            <TreeView.ItemTemplate>
+                                <!--<DataTemplate DataType="{x:Type vm:DirectoryViewModel}">
+                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
+                                </DataTemplate>-->
+                                <HierarchicalDataTemplate DataType="vm:DirectoryViewModel"
+                                                          ItemsSource="{Binding DirectoryItems}">
+                                    <StackPanel Orientation="Horizontal"
+                                                >
+                                        <fa:ImageAwesome Height="12"
+                                                         Icon="Regular_Folder"
+                                                         Margin="0,0,5,0"
+                                                         Foreground="Yellow"/>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1" Header="Файлы">
+                        <ListBox ItemsSource="{Binding SelectedDirectory.Files, Mode=OneWay}">
+                            
+
+                        </ListBox>
+
+                    </GroupBox>
+                </Grid>
             </TabItem>
         </TabControl>
     </DockPanel>
