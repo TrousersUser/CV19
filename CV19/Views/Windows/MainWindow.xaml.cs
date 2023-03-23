@@ -6,7 +6,7 @@ namespace CV19
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    { 
         public MainWindow() => InitializeComponent();
 
         //private void CollectionViewSource_Filter(object sender, System.Windows.Data.FilterEventArgs e)

@@ -47,7 +47,10 @@ namespace CV19.ViewModels
         }
 
         /*------------------------------------------------------------------------------------------------------------------------------- */
+        #region DriveRootDir - DirectoryViewModel : Свойство, возвращающее экземпляр модели представления об каталоге, закрепленном к C диску.
         public DirectoryViewModel DriveRootDir { get; } = new DirectoryViewModel(@"C:\");
+
+        #endregion
 
         #region SeletedDirectory : DirectoryViewModel - Выбранный каталог/директория из фаловой системы.
         /// <summary>

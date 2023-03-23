@@ -9,6 +9,5 @@ namespace CV19.Models
         public DateTime Date { get; set; }
 
         public int Count { get; set; }
-
     }
 }

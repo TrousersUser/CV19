@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-using System.Drawing;
+using System.Windows;
 
 namespace CV19.Models
 {
@@ -9,7 +9,7 @@ namespace CV19.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Point - structure, what gives an opportunity to use X,Y points, containing any of numeric, in int type, information
+        /// Point - structure what gives an opportunity to use X,Y points, containing any of numeric in int type information
         /// </summary>
         public Point Location { get; set; }
         public IEnumerable<ConfirmedCount> Confirmed { get; set; }
