@@ -13,11 +13,10 @@ namespace CV19.Services
     internal class DataService
     {
         private const string DataSourceAddress = @"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
-
         private static async Task<Stream> GetDataStream()
         {
-            using var client = new HttpClient();
-            using HttpResponseMessage responce = await client.GetAsync(
+             var client = new HttpClient();
+             HttpResponseMessage responce = await client.GetAsync(
                 DataSourceAddress,
                 HttpCompletionOption.ResponseHeadersRead);
 
@@ -27,8 +26,8 @@ namespace CV19.Services
         }
         private static IEnumerable<string> GetDataLines()
         {
-             var data_stream = GetDataStream().Result;
-             var data_reader = new StreamReader(data_stream);
+             using var data_stream = GetDataStream().Result;
+             using var data_reader = new StreamReader(data_stream);
 
             while (!data_reader.EndOfStream)
             {
@@ -36,7 +35,12 @@ namespace CV19.Services
                 if (string.IsNullOrEmpty(line))
                     continue;
 
-                yield return line.Replace("Korea,", "Korea -");
+                if (line.Contains(" "))
+                    line = line.Insert(line.IndexOf(',', line.IndexOf('"')) + 1, "-")
+                        .Remove(line.IndexOf(',', line.IndexOf('"')), 1);
+                
+                yield return line;
+                   
             }
             yield break;
         }
@@ -46,7 +50,6 @@ namespace CV19.Services
         .Skip(4)
         .Select(column => DateTime.Parse(column, CultureInfo.InvariantCulture))
         .ToArray();
-
         public static IEnumerable<(string province, string country, (double lat, double lon) place, int[] illCount)>GetCountriesData()
         {
             var lines = GetDataLines()
@@ -55,7 +58,6 @@ namespace CV19.Services
 
             foreach (string [] row in lines)
             {
-               
                 var _province = row[0].Trim();
                 var country_name = row[1].Trim(' ', '"');
                 var latitude = double.Parse(row[2]);
@@ -66,9 +68,7 @@ namespace CV19.Services
 
                 yield return (_province, country_name, (latitude, longitude), _illCount);
             }
-
         }
-
         public IEnumerable<CountryInfo> GetData()
         {
             DateTime[] dates = GetDates();

@@ -16,6 +16,5 @@ namespace CV19
             Services.DataService dataService = new Services.DataService();
             var countries = dataService.GetData().ToArray();
         }
-
     }
 }
