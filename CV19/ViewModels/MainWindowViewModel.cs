@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
-using CV19.Models;
 using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
@@ -10,17 +9,22 @@ using CV19.Models.Decanat;
 using System.Linq;
 using System.Windows.Data;
 using System.ComponentModel;
+using DataPoint = CV19.Models.DataPoint;
 
 namespace CV19.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
         /*------------------------------------------------------------------------------------------------------------------------------- */
+        private readonly CountriesStatisticViewModel countriesStatistik;
+        /*------------------------------------------------------------------------------------------------------------------------------- */
         public MainWindowViewModel()
         {
             //#region Commands
             //CloseAppllicationCommand = new LambdaCommand()
             //#endregion
+
+            countriesStatistik = new CountriesStatisticViewModel(this);
 
             #region GraphLogic
             var data_points = new List<DataPoint>((int)(360 / 0.1));
