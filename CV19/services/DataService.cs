@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
 
 namespace CV19.Services
 {
@@ -26,8 +27,10 @@ namespace CV19.Services
         }
         private static IEnumerable<string> GetDataLines()
         {
-             using var data_stream = GetDataStream().Result;
-             using var data_reader = new StreamReader(data_stream);
+            using Stream data_stream = SynchronizationContext.Current is null ? GetDataStream().Result : Task.Run(GetDataStream).Result;
+            // Запуск задачи в отдельном потоке, затрагивающей функцию,
+            // возвращающую экземпляр класса Task, имеющий обобщение в виде класса Stream(Потока), хранящегося в свойстве Result.
+             using StreamReader data_reader = new StreamReader(data_stream);
 
             while (!data_reader.EndOfStream)
             {
@@ -35,12 +38,11 @@ namespace CV19.Services
                 if (string.IsNullOrEmpty(line))
                     continue;
 
-                if (line.Contains(" "))
-                    line = line.Insert(line.IndexOf(',', line.IndexOf('"')) + 1, "-")
+                if (line.Contains('"'))
+                    line = line.Insert(line.IndexOf(',', line.IndexOf('"')) + 1, " -")
                         .Remove(line.IndexOf(',', line.IndexOf('"')), 1);
-                
                 yield return line;
-                   
+
             }
             yield break;
         }
@@ -56,12 +58,18 @@ namespace CV19.Services
                 .Skip(1)
                 .Select(line => line.Split(','));
 
+            NumberStyles style = NumberStyles.AllowDecimalPoint;
+            IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+
             foreach (string [] row in lines)
             {
                 var _province = row[0].Trim();
                 var country_name = row[1].Trim(' ', '"');
-                var latitude = double.Parse(row[2]);
-                var longitude = double.Parse(row[3]);
+                double latitude; /*double.Parse(row[2]);*/
+                double longitude; /*double.Parse(row[3]);*/
+                Double.TryParse(row[2], style, formatter, out latitude);
+                Double.TryParse(row[3], style, formatter, out longitude);
+
                 int[] _illCount = row.Skip(5)
                     .Select(line => Int32.Parse(line))
                     .ToArray();

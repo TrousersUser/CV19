@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        
+        xmlns:view="clr-namespace:CV19.Views.UserControls"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:oxy="http://oxyplot.org/wpf"
@@ -49,48 +49,19 @@
             </StatusBarItem>
             <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
-        
+
         <TabControl SelectedIndex="{Binding SelectedTabIndex}">
-            <TabItem  Header="Тестирование виртуализации">
-                <Grid>
-                    <ListBox HorizontalAlignment="Left"
-                         Width="200"
-                         Margin="30"
-                         ItemsSource="{Binding Students}"
-                         VirtualizingPanel.IsVirtualizing="True"
-                         VirtualizingPanel.IsContainerVirtualizable="True"
-                         VirtualizingPanel.VirtualizationMode="Recycling"
-                         >
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel/>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="decanat:Student">
-                                <Border BorderBrush="Blue"
-                                        BorderThickness="1"
-                                        CornerRadius="3"
-                                        Padding="3">
-                                    <Border.CacheMode>
-                                        <BitmapCache RenderAtScale="1"/>
-                                    </Border.CacheMode>
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Surname}"/>
-                                        <TextBlock Text="{Binding Name}"/>
-                                        <TextBlock Text="{Binding Patronymic, TargetNullValue=none}"/>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <!--<TextBlock Text="{Binding Source={x:Static l:App.IsDesignMode}}"/>-->
-                </Grid>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Height="13"
+                                         Icon="Solid_ChartLine"
+                                         Margin="0,0,5,0"
+                                         Foreground="LightBlue"/>
+                        <TextBlock Text="Статистика"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <view:CountriesStatisticView/>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
@@ -236,7 +207,8 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="График" Visibility="Collapsed">
+            <TabItem Header="График" 
+                     Visibility="Collapsed">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
                         <oxy:LinearAxis Position="Left"/>
@@ -247,72 +219,6 @@
                                     DataFieldX="XValue"
                                     DataFieldY="YValue"/>
                 </oxy:Plot>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Regular_File" Foreground="BlueViolet"
-                                         Margin="0,2,5,0"
-                                         Height="13"/>
-                        <TextBlock Text="Файловая система"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="0" Header="Директории">
-                        <GroupBox.Resources>
-                            <HierarchicalDataTemplate DataType="{x:Type vm:DirectoryViewModel}"
-                                                          ItemsSource="{Binding DirectoryItems}">
-                                <StackPanel Orientation="Horizontal"
-                                                >
-                                    <fa:ImageAwesome Height="12"
-                                                         Icon="Regular_Folder"
-                                                         Margin="0,0,5,0"
-                                                         Foreground="Yellow"/>
-                                    <TextBlock Text="{Binding Name}"/>
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                            <DataTemplate DataType="{x:Type vm:FileViewModel}">
-                                <StackPanel Orientation="Horizontal"
-                                            ToolTip="{Binding CreationTime}"
-                                            >
-                                    <fa:ImageAwesome Height="12"
-                                                     Icon="Regular_FileAlt"
-                                                     Foreground="DarkOrange"
-                                                     Margin="0,0,5,0"
-                                                     />
-                                    <TextBlock Text="{Binding Name}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </GroupBox.Resources>
-                        <!--<ListBox ItemsSource="{Binding DriveRootDir.DirectoryItems}"
-                                 SelectedItem="{Binding SelectedDirectory}"
-                                 SelectedIndex="0">
-                            
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type vm:DirectoryViewModel}">
-                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-
-
-                        </ListBox>-->
-                        <TreeView ItemsSource="{Binding DriveRootDir.DirectoryItems}"
-                                  >
-                           
-                        </TreeView>
-                    </GroupBox>
-                    <!--<GroupBox Grid.Column="1" Header="Файлы">
-                        <ListBox ItemsSource="{Binding SelectedDirectory.Files, Mode=OneWay}">
-                            
-
-                        </ListBox>
-
-                    </GroupBox>-->
-                </Grid>
             </TabItem>
         </TabControl>
     </DockPanel>
