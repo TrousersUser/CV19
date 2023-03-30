@@ -51,6 +51,19 @@ namespace CV19.ViewModels
             private set => Set(ref _Countries, value);
         }
         #endregion
+
+        #region SelectedCountry : CountryInfo - Выбранный в представлении экземпляр класса CountryInfo.
+        /// <summary>
+        /// Свойство, возвращающее экземпляр для класса CountryInfo. 
+        /// Объект, передаваемый, содержит информацию о стране, как источнике заболевания COVID19.
+        /// </summary>
+        private CountryInfo _SelectedCountry;
+        public CountryInfo SelectedCountry
+        {
+            get => _SelectedCountry;
+            set => Set(ref _SelectedCountry, value);
+        }
+        #endregion
         /*------------------------------------------------------------------------------------------------------------------------------- */
         #region Commands
         #region RefreshDataCommand - Обновление списка из данных.

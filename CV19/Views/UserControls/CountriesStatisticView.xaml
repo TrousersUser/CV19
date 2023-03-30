@@ -35,13 +35,17 @@
                     </StackPanel>
                 </Button>
                 <ListBox ItemsSource="{Binding Countries}"
+                         SelectedItem="{Binding SelectedCountry}"
                     >
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type model:CountryInfo}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Location.X, StringFormat=[Длина: {0}]}"/>
-                                <TextBlock Text="{Binding Location.Y, StringFormat=[Долгота: {0}]}"/>
-                                <TextBlock Text="{Binding Name, StringFormat=Имя: {0}}"/>
+                                <!--<TextBlock Text="{Binding Location.X, StringFormat=[Длина: {0}]}"/>
+                                <TextBlock Text="{Binding Location.Y, StringFormat=[Долгота: {0}]}"/>-->
+                                <TextBlock>
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <TextBlock Text="{Binding Location}"/>
+                                </TextBlock>
                             </StackPanel>
                         </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -59,6 +63,7 @@
                               VerticalAlignment="Bottom"
                               HorizontalAlignment="Stretch"
                             />
+                
             </Grid>
         </GroupBox>
     </Grid>
