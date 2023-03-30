@@ -16,15 +16,16 @@ namespace CV19.ViewModels
     internal class MainWindowViewModel : ViewModelBase
     {
         /*------------------------------------------------------------------------------------------------------------------------------- */
-        private readonly CountriesStatisticViewModel countriesStatistik;
+        #region countriesStatistik : CountriesStatisticViewModel - Модель представления, зависимая от MainWindowViewModel.
+        public CountriesStatisticViewModel countriesStatistic { get; }
+        #endregion
         /*------------------------------------------------------------------------------------------------------------------------------- */
         public MainWindowViewModel()
         {
             //#region Commands
             //CloseAppllicationCommand = new LambdaCommand()
             //#endregion
-
-            countriesStatistik = new CountriesStatisticViewModel(this);
+            countriesStatistic = new CountriesStatisticViewModel(this);
 
             #region GraphLogic
             var data_points = new List<DataPoint>((int)(360 / 0.1));
@@ -224,7 +225,6 @@ namespace CV19.ViewModels
                 if (!Set(ref _StudentFilterText, value)) return;
                 else if (_SelectedGroupStudents.View != null) _SelectedGroupStudents.View.Refresh(); 
             }
-
         }
         #endregion
 

@@ -21,7 +21,8 @@
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Файл">
+            <MenuItem Header="Файл" >
+                
                 <MenuItem Header="Выход" Command="{Binding CloseAppllicationCommand}"/>
             </MenuItem>
             <MenuItem Header="Помощь">
@@ -61,7 +62,7 @@
                         <TextBlock Text="Статистика"/>
                     </StackPanel>
                 </TabItem.Header>
-                <view:CountriesStatisticView/>
+                <view:CountriesStatisticView DataContext="{Binding countriesStatistic}"/>
             </TabItem>
             <TabItem>
                 <TabItem.Header>

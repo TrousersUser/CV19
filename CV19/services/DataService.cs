@@ -14,9 +14,10 @@ namespace CV19.Services
     internal class DataService
     {
         private const string DataSourceAddress = @"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+
         private static async Task<Stream> GetDataStream()
         {
-             var client = new HttpClient();
+            var client = new HttpClient();
              HttpResponseMessage responce = await client.GetAsync(
                 DataSourceAddress,
                 HttpCompletionOption.ResponseHeadersRead);
@@ -58,20 +59,20 @@ namespace CV19.Services
                 .Skip(1)
                 .Select(line => line.Split(','));
 
-            NumberStyles style = NumberStyles.AllowDecimalPoint;
+            NumberStyles style = NumberStyles.Number;
             IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
 
-            foreach (string [] row in lines)
+            foreach (string [] rows in lines)
             {
-                var _province = row[0].Trim();
-                var country_name = row[1].Trim(' ', '"');
-                double latitude; /*double.Parse(row[2]);*/
-                double longitude; /*double.Parse(row[3]);*/
-                Double.TryParse(row[2], style, formatter, out latitude);
-                Double.TryParse(row[3], style, formatter, out longitude);
+                var _province = rows[0].Trim();
+                var country_name = rows[1].Trim(' ', '"');
+                double latitude;
+                double longitude;
+                Double.TryParse(rows[2], style, formatter, out latitude);
+                Double.TryParse(rows[3], style, formatter, out longitude);
 
-                int[] _illCount = row.Skip(5)
-                    .Select(line => Int32.Parse(line))
+                int[] _illCount = rows.Skip(5)
+                    .Select(line => int.Parse(line))
                     .ToArray();
 
                 yield return (_province, country_name, (latitude, longitude), _illCount);
@@ -83,6 +84,7 @@ namespace CV19.Services
 
             var data = GetCountriesData()
                 .GroupBy(d => d.country);
+
             foreach (var dataGroup in data)
             {
                 var country = new CountryInfo()
@@ -98,11 +100,11 @@ namespace CV19.Services
                             Count = illCount,
                             Date = date
                         })
-                    }),
+                    })
                 };
                 yield return country;
+
             }
-            yield break;
         }
     }
 }

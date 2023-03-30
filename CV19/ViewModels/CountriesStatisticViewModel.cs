@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CV19.Infrastructure.Commands;
 using CV19.Models;
 using System.Collections.Generic;
+using System;
 
 namespace CV19.ViewModels
 {
@@ -16,11 +17,20 @@ namespace CV19.ViewModels
         private MainWindowViewModel mainViewModel { get;}
         /*------------------------------------------------------------------------------------------------------------------------------- */
         /// <summary>
-        /// Constructor
+        /// Constructors
         /// </summary>
         /// <param name="_mainViewModel">MainWindowViewModel object</param>
-        public CountriesStatisticViewModel(MainWindowViewModel _mainViewModel) 
-            => mainViewModel = _mainViewModel;
+        public CountriesStatisticViewModel(MainWindowViewModel _mainViewModel)
+        => mainViewModel = _mainViewModel;
+        
+        /// <summary>
+        /// Отладочный конструктор, в ходе разработки используемый в зависимых представлениях UserControl, в визуальном дизайнере
+        /// </summary>
+        public CountriesStatisticViewModel() : this(null)
+        {
+            if (!App.IsDesignMode)
+                throw new InvalidOperationException("Попытка использовать конструктор, используемый для визуального дизайнера, для компиляции целой сборки.");
+        } 
         /*------------------------------------------------------------------------------------------------------------------------------- */
         /// <summary>
         /// Fields/Properties.
@@ -48,7 +58,7 @@ namespace CV19.ViewModels
         /// Команда, выполняющая функцию обноавления источника данных, хранящего перечисление CountryInfo объектов, представляющих описание,
         /// в контексте эпидемии Covid19 о странах.
         /// </summary>
-        private ICommand _RefreshDataCommand;
+        private ICommand  _RefreshDataCommand;
         public ICommand RefreshDataCommand => _RefreshDataCommand ??= new LambdaCommand(OnRefreshDataExecuted,CanRefreshDataExecute);
         private bool CanRefreshDataExecute(object param) => true;
         private void OnRefreshDataExecuted(object param)
@@ -58,6 +68,5 @@ namespace CV19.ViewModels
 	    #endregion
         #endregion
         /*------------------------------------------------------------------------------------------------------------------------------- */
-
     }
 }
