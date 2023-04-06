@@ -8,10 +8,14 @@
              xmlns:vm="clr-namespace:CV19.ViewModels"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:model="clr-namespace:CV19.Models"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="450"  d:DesignWidth="800"
              d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, d:IsDesignTimeCreatable = True}"
              >
+    <UserControl.Resources>
+        <con:LocationPointToStr x:Key="PointToStr"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="230"/>
@@ -37,10 +41,6 @@
                 <ListBox ItemsSource="{Binding Countries}"
                          SelectedItem="{Binding SelectedCountry}"
                     >
-                    <ListBox.Resources>
-                        <con:LocationPointToStr x:Key="PointToStr"/>
-                    </ListBox.Resources>
-
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type model:CountryInfo}">
                             <StackPanel>
@@ -64,15 +64,27 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.Resources>
+                    <sys:Double x:Key="Value3Dbl">
+                        3
+                    </sys:Double>
+
                     <con:Ratio y="2" x:Key="Ratio2"/>
-                    <con:Linear k="5" b="3" x:Key="Linear.K5.B3"/>
+                    <con:Linear k="5" b="{StaticResource Value3Dbl}" x:Key="Linear.K5.B3"/>
+                    <con:CompositeConverter x:Key="TestConverter">
+                        <con:CompositeConverter.first>
+                            <con:Linear k="5"/>
+                        </con:CompositeConverter.first>
+                        <con:CompositeConverter.second>
+                            <con:Linear k="-3" b="10"/>
+                        </con:CompositeConverter.second>
+                    </con:CompositeConverter>
                 </Grid.Resources>
                 <GridSplitter Grid.Row="0"
                               VerticalAlignment="Bottom"
                               HorizontalAlignment="Stretch"
                             />
                 <Slider Grid.Row="0" Name="ValueSlider" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
-                <TextBox Text="{Binding Value, ElementName=ValueSlider,Converter={StaticResource Ratio2}, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Value, ElementName=ValueSlider,Converter={StaticResource TestConverter}, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Row="0" 
                          Margin="0,30,0,0"
                          VerticalAlignment="Top"

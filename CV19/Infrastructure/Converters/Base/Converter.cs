@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Globalization;
-namespace CV19.Infrastructure.Converters
+
+namespace CV19.Infrastructure.Converters.Base
 {
     internal abstract class Converter : IValueConverter
     {

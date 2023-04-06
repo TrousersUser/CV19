@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Markup;
+using System.Windows.Data;
+using CV19.Infrastructure.Converters.Base;
+
 namespace CV19.Infrastructure.Converters
 {
+    [ValueConversion(typeof(double),typeof(double))]
     internal class Ratio : Converter
     {
         [ConstructorArgument("y")]

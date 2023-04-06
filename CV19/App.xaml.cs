@@ -13,8 +13,6 @@ namespace CV19
         {
             IsDesignMode = false;
             base.OnStartup(e);
-
-            
         }
     }
 }
