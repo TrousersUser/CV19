@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:loc="clr-namespace:CV19.Views.UserControls"
+             xmlns:con="clr-namespace:CV19.Infrastructure.Converters"
              xmlns:vm="clr-namespace:CV19.ViewModels"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:model="clr-namespace:CV19.Models"
@@ -12,7 +13,6 @@
              d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, d:IsDesignTimeCreatable = True}"
              >
     <Grid>
- 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="230"/>
             <ColumnDefinition Width="*"/>
@@ -37,6 +37,10 @@
                 <ListBox ItemsSource="{Binding Countries}"
                          SelectedItem="{Binding SelectedCountry}"
                     >
+                    <ListBox.Resources>
+                        <con:LocationPointToStr x:Key="PointToStr"/>
+                    </ListBox.Resources>
+
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type model:CountryInfo}">
                             <StackPanel>
@@ -44,11 +48,11 @@
                                 <TextBlock Text="{Binding Location.Y, StringFormat=[Долгота: {0}]}"/>-->
                                 <TextBlock>
                                     <TextBlock Text="{Binding Name}"/>
-                                    <TextBlock Text="{Binding Location}"/>
+                                    <TextBlock x:Name="countryInfo" Text="{Binding Location, Converter = {StaticResource PointToStr}, StringFormat=({0})}" Foreground="DarkGreen"/>
                                 </TextBlock>
                             </StackPanel>
                         </DataTemplate>
-                        </ListBox.ItemTemplate>
+                    </ListBox.ItemTemplate>
                 </ListBox>
             </DockPanel>
         </GroupBox>
@@ -59,11 +63,22 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <con:Ratio y="2" x:Key="Ratio2"/>
+                    <con:Linear k="5" b="3" x:Key="Linear.K5.B3"/>
+                </Grid.Resources>
                 <GridSplitter Grid.Row="0"
                               VerticalAlignment="Bottom"
                               HorizontalAlignment="Stretch"
                             />
-                
+                <Slider Grid.Row="0" Name="ValueSlider" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
+                <TextBox Text="{Binding Value, ElementName=ValueSlider,Converter={StaticResource Ratio2}, UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Row="0" 
+                         Margin="0,30,0,0"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Left"
+                         Width="200"
+                         />
             </Grid>
         </GroupBox>
     </Grid>

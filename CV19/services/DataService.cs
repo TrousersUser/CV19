@@ -103,7 +103,6 @@ namespace CV19.Services
                     })
                 };
                 yield return country;
-
             }
         }
     }

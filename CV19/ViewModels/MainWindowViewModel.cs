@@ -16,7 +16,7 @@ namespace CV19.ViewModels
     internal class MainWindowViewModel : ViewModelBase
     {
         /*------------------------------------------------------------------------------------------------------------------------------- */
-        #region countriesStatistik : CountriesStatisticViewModel - Модель представления, зависимая от MainWindowViewModel.
+        #region countriesStatistic : CountriesStatisticViewModel - Модель представления, зависимая от MainWindowViewModel.
         public CountriesStatisticViewModel countriesStatistic { get; }
         #endregion
         /*------------------------------------------------------------------------------------------------------------------------------- */
