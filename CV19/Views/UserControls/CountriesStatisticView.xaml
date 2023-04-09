@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:loc="clr-namespace:CV19.Views.UserControls"
              xmlns:con="clr-namespace:CV19.Infrastructure.Converters"
+             xmlns:com="clr-namespace:CV19.Infrastructure.Common"
              xmlns:vm="clr-namespace:CV19.ViewModels"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:model="clr-namespace:CV19.Models"
@@ -78,6 +79,7 @@
                             <con:Linear k="-3" b="10"/>
                         </con:CompositeConverter.second>
                     </con:CompositeConverter>
+                    <com:StringToIntArray x:Key="StringToIntArray"/>
                     <con:ToArray x:Key="ToArray"/>
                 </Grid.Resources>
                 <GridSplitter Grid.Row="0"
@@ -85,13 +87,20 @@
                               HorizontalAlignment="Stretch"
                             />
                 <StackPanel Grid.Row="0">
-                    <Slider Grid.Row="0" Name="Value1" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
-                    <Slider Grid.Row="0" Name="Value2" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
-                    <Slider Grid.Row="0" Name="Value3" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
+                    <Slider Grid.Row="0" Name="Value1" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self},
+                        Converter={con:Linear 5}}"/>
+                    <Slider Grid.Row="0" Name="Value2" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self},
+                        Converter={con:CompositeConverter first={con:Add 228}, second={con:Ratio 5}}}"/>
+                    <Slider Grid.Row="0" Name="Value3" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self},
+                        Converter={con:CompositeConverter {con:Linear 5,7},{con:CompositeConverter {con:Ratio 6}, {con:Add 1488}}}}"/>
                     <Slider Grid.Row="0" Name="Value4" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
                 </StackPanel>
-                <ListBox Grid.Row="1">
-                    <ListBox.ItemsSource>
+                <Border Grid.Row="1" DataContext="{com:StringToIntArray '23;543;232;43'}">
+                    <ListBox ItemsSource="{Binding}">
+
+                    </ListBox>
+                </Border>
+                <!--<ListBox.ItemsSource>
                         <MultiBinding Converter="{StaticResource ToArray}" StringFormat="{}{0}">
                             <Binding ElementName="Value1" Path="Value"/>
                             <Binding ElementName="Value2" Path="Value"/>
@@ -99,7 +108,7 @@
                             <Binding ElementName="Value4" Path="Value"/>
                         </MultiBinding>
                     </ListBox.ItemsSource>
-                </ListBox>
+                </ListBox>-->
                 <!--<TextBlock Grid.Row="1">
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource ToArray}" StringFormat="{}{0}">

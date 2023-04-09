@@ -2,11 +2,13 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Markup;
 using CV19.Infrastructure.Converters.Base;
 
 namespace CV19.Infrastructure.Converters
 {
     [ValueConversion(typeof(Point),typeof(string))]
+    [MarkupExtensionReturnType(typeof(LocationPointToStr))]
     internal class LocationPointToStr : Converter
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo cultureInfo)

@@ -7,6 +7,7 @@ using CV19.Infrastructure.Converters.Base;
 namespace CV19.Infrastructure.Converters
 {
     [ValueConversion(typeof(double),typeof(double))]
+    [MarkupExtensionReturnType(typeof(Ratio))]
     internal class Ratio : Converter
     {
         [ConstructorArgument("y")]
