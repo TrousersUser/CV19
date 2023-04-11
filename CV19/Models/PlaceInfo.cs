@@ -12,6 +12,6 @@ namespace CV19.Models
         /// Point - structure what gives an opportunity to use X,Y points, containing any of numeric in int type information
         /// </summary>
         public virtual Point Location { get; set; }
-        public IEnumerable<ConfirmedCount> Confirmed { get; set; }
+        public virtual IEnumerable<ConfirmedCount> Confirmed { get; set; }
     }
 }

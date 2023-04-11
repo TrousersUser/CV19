@@ -15,7 +15,7 @@ namespace CV19.Infrastructure.Converters
         {
             if (!(value is Point point)) throw new ArgumentException("Конвертер нацелен на преобразования экземпляра класс Point (System.Windows;) в String(System)");
 
-            return $"lon:{point.Y:F1};lat:{point.X:F1}";
+            return $"lon:{point.Y};lat:{point.X}";
         }
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo cultureInfo)
         {

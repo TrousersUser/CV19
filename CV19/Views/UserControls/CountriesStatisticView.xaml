@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:oxy="http://oxyplot.org/wpf"
              xmlns:loc="clr-namespace:CV19.Views.UserControls"
              xmlns:con="clr-namespace:CV19.Infrastructure.Converters"
              xmlns:com="clr-namespace:CV19.Infrastructure.Common"
@@ -49,7 +50,8 @@
                                 <TextBlock Text="{Binding Location.Y, StringFormat=[Долгота: {0}]}"/>-->
                                 <TextBlock>
                                     <TextBlock Text="{Binding Name}"/>
-                                    <TextBlock x:Name="countryInfo" Text="{Binding Location, Converter = {StaticResource PointToStr}, StringFormat=({0})}" Foreground="DarkGreen"/>
+                                    <TextBlock x:Name="countryInfo" Text="{Binding Location, Converter = {StaticResource PointToStr}, StringFormat=({0})}"
+                                               Foreground="DarkGreen"/>
                                 </TextBlock>
                             </StackPanel>
                         </DataTemplate>
@@ -86,20 +88,22 @@
                               VerticalAlignment="Bottom"
                               HorizontalAlignment="Stretch"
                             />
-                <StackPanel Grid.Row="0">
-                    <Slider Grid.Row="0" Name="Value1" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self},
-                        Converter={con:Linear 5}}"/>
-                    <Slider Grid.Row="0" Name="Value2" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self},
-                        Converter={con:CompositeConverter first={con:Add 228}, second={con:Ratio 5}}}"/>
-                    <Slider Grid.Row="0" Name="Value3" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self},
-                        Converter={con:CompositeConverter {con:Linear 5,7},{con:CompositeConverter {con:Ratio 6}, {con:Add 1488}}}}"/>
-                    <Slider Grid.Row="0" Name="Value4" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
-                </StackPanel>
-                <Border Grid.Row="1" DataContext="{com:StringToIntArray '23;543;232;43'}">
-                    <ListBox ItemsSource="{Binding}">
-
-                    </ListBox>
-                </Border>
+                <oxy:Plot Grid.Row="0">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left"
+                                        Title="Число" 
+                                        MajorGridlineStyle="Solid" 
+                                        MinorGridlineStyle="Dash"/>
+                        <oxy:DateTimeAxis Position="Bottom"
+                                          Title="Дата"/>
+                    </oxy:Plot.Axes>
+                    <oxy:LineSeries StrokeThickness="2"
+                                    Color="Red"
+                                    ItemsSource="{Binding SelectedCountry.Confirmed}"
+                                    DataFieldX="Date"
+                                    DataFieldY="Count"
+                                    />
+                </oxy:Plot>
                 <!--<ListBox.ItemsSource>
                         <MultiBinding Converter="{StaticResource ToArray}" StringFormat="{}{0}">
                             <Binding ElementName="Value1" Path="Value"/>
