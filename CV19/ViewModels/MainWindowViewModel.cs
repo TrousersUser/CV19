@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
-using CV19.Models;
 using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
@@ -10,17 +9,23 @@ using CV19.Models.Decanat;
 using System.Linq;
 using System.Windows.Data;
 using System.ComponentModel;
+using DataPoint = CV19.Models.DataPoint;
 
 namespace CV19.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
         /*------------------------------------------------------------------------------------------------------------------------------- */
+        #region countriesStatistic : CountriesStatisticViewModel - Модель представления, зависимая от MainWindowViewModel.
+        public CountriesStatisticViewModel countriesStatistic { get; }
+        #endregion
+        /*------------------------------------------------------------------------------------------------------------------------------- */
         public MainWindowViewModel()
         {
             //#region Commands
             //CloseAppllicationCommand = new LambdaCommand()
             //#endregion
+            countriesStatistic = new CountriesStatisticViewModel(this);
 
             #region GraphLogic
             var data_points = new List<DataPoint>((int)(360 / 0.1));
@@ -36,7 +41,7 @@ namespace CV19.ViewModels
             _SelectedGroupStudents.Filter += OnStudentsFiltred;
             _GroupList = SourceCreating();
             _GroupList.Filter += OnGroupsFiltred;
-            _GroupList.SortDescriptions.Add(new SortDescription("Name",ListSortDirection.Descending));
+            //_GroupList.SortDescriptions.Add(new SortDescription("Name",ListSortDirection.Descending));
 
             
             //_SelectedGroupStudents.SortDescriptions.Add
@@ -47,55 +52,6 @@ namespace CV19.ViewModels
         }
 
         /*------------------------------------------------------------------------------------------------------------------------------- */
-        public DirectoryViewModel DriveRootDir { get; } = new DirectoryViewModel(@"C:\");
-
-        #region SeletedDirectory : DirectoryViewModel - Выбранный каталог/директория из фаловой системы.
-        /// <summary>
-        /// Свойство, возвращающее ссылку на экземпляр класса DirectoryViewMode, что является моделью представления,
-        /// хранящей информацию об конкретном каталоге.
-        /// </summary>
-        private DirectoryViewModel _SelectedDirectory;
-        public DirectoryViewModel SelectedDirectory
-        {
-            get => _SelectedDirectory;
-            set => Set(ref _SelectedDirectory, value);
-        }
-        #endregion
-
-
-        #region object[] : CompositeCollection - Массив, включающий информацию с различными типами - значимыми, ссылочными.
-        private object[] _CompositeCollection;
-        /// <summary>
-        /// Массив, включающий информацию с различными типами - значимыми, ссылочными.
-        /// </summary>
-        public object[] CompositeCollection => _CompositeCollection ??= CompositeCollectionFilling();
-        private object[] CompositeCollectionFilling()
-        {
-            var newGroup = Groups[0];
-
-            var data_list = new List<object>()
-            {
-                "Dudes",
-                12,
-               newGroup,
-               newGroup.Students[0]
-            };
-
-            return data_list.ToArray();
-        }
-        #endregion
-
-        #region SelectedCompositeValue : object - Выбранное значение из композиции
-        private object _SelectedCompositeValue;
-        /// <summary>
-        /// Выделенный объект из массива с различными типами данных.
-        /// </summary>
-        public object SelectedCompositeValue
-        {
-            get => _SelectedCompositeValue;
-            set => Set(ref _SelectedCompositeValue, value);
-        }
-        #endregion
 
 
         #region ObservableCollection<Group> : Groups - Поле, возвращающее коллекцию наблюдаемую, с сущностями - экземплярами класса Group
@@ -267,9 +223,8 @@ namespace CV19.ViewModels
             set
             {
                 if (!Set(ref _StudentFilterText, value)) return;
-                _SelectedGroupStudents.View.Refresh();
+                else if (_SelectedGroupStudents.View != null) _SelectedGroupStudents.View.Refresh(); 
             }
-
         }
         #endregion
 
@@ -402,6 +357,5 @@ namespace CV19.ViewModels
         #endregion
 
         /*------------------------------------------------------------------------------------------------------------------------------- */
-
     }
 }

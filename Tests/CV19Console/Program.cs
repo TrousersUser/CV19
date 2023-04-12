@@ -10,7 +10,7 @@ namespace CV19Console
         private static async Task<Stream> GetDataStream()
         {
             var client = new HttpClient();
-            var responce = await client.GetAsync(data_url, HttpCompletionOption.ResponseHeadersRead);
+            HttpResponseMessage responce = await client.GetAsync(data_url, HttpCompletionOption.ResponseHeadersRead);
             return await responce.Content.ReadAsStreamAsync();
         }
         private static IEnumerable<string> GetDataLines()
@@ -30,8 +30,8 @@ namespace CV19Console
         private static DateTime[] GetDates() => GetDataLines()
             .First()
             .Split(',')
-            .Skip(5)
-            .Select(line => DateTime.Parse(line,CultureInfo.InvariantCulture))
+            .Skip(4)
+            .Select(column => DateTime.Parse(column,CultureInfo.InvariantCulture))
             .ToArray();
 
         public static IEnumerable<(string Country, string Province, int[] Count)> GetData()
@@ -67,14 +67,13 @@ namespace CV19Console
             //    Console.WriteLine($"{date.ToShortDateString()}\n"); ;
             //}
             #endregion
-
+           
             var russiaCovidData = GetData()
                 .First(data => data.Country.Equals("Russia", StringComparison.OrdinalIgnoreCase));
-
+            
             Console.WriteLine(string.Join("\r\n",
                 GetDates()
-                .Zip(russiaCovidData.Count, (date, count) => $"{date.ToShortDateString()} {count}")));
-           
+                .Zip(russiaCovidData.Count, (date, count) => $"{date:dd:MM} {count}")));
                 
             Console.ReadLine();
         }

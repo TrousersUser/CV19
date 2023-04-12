@@ -7,8 +7,8 @@ namespace CV19.ViewModels.Base
 {
     internal abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
-       public event PropertyChangedEventHandler? PropertyChanged;
-       protected virtual void OnPropertyChanged([CallerMemberName]string PropertyName = null)
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName]string PropertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }

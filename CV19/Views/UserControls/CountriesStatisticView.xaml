@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="CV19.Views.UserControls.CountriesStatisticView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:loc="clr-namespace:CV19.Views.UserControls"
+             xmlns:con="clr-namespace:CV19.Infrastructure.Converters"
+             xmlns:com="clr-namespace:CV19.Infrastructure.Common"
+             xmlns:vm="clr-namespace:CV19.ViewModels"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:model="clr-namespace:CV19.Models"
+             xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" 
+             d:DesignHeight="450"  d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, d:IsDesignTimeCreatable = True}"
+             >
+    <UserControl.Resources>
+        <con:LocationPointToStr x:Key="PointToStr"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <GridSplitter Grid.Column="0"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Right"
+                      />
+        <GroupBox Grid.Column="0"
+                  Header="Список стран">
+            <DockPanel>
+                <Button DockPanel.Dock="Top"
+                        Command="{Binding RefreshDataCommand}"
+                        >
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Height="12"
+                                         Icon="Solid_ArrowDown"
+                                         Margin="0,0,3,0"/>
+                        <TextBlock Text="Загрузить данные"/>
+                    </StackPanel>
+                </Button>
+                <ListBox ItemsSource="{Binding Countries}"
+                         SelectedItem="{Binding SelectedCountry}"
+                    >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:CountryInfo}">
+                            <StackPanel>
+                                <!--<TextBlock Text="{Binding Location.X, StringFormat=[Длина: {0}]}"/>
+                                <TextBlock Text="{Binding Location.Y, StringFormat=[Долгота: {0}]}"/>-->
+                                <TextBlock>
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <TextBlock x:Name="countryInfo" Text="{Binding Location, Converter = {StaticResource PointToStr}, StringFormat=({0})}"
+                                               Foreground="DarkGreen"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="1"
+                  Header="Информация">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <sys:Double x:Key="Value3Dbl">
+                        3
+                    </sys:Double>
+
+                    <con:Ratio y="2" x:Key="Ratio2"/>
+                    <con:Linear k="5" b="{StaticResource Value3Dbl}" x:Key="Linear.K5.B3"/>
+                    <con:CompositeConverter x:Key="TestConverter">
+                        <con:CompositeConverter.first>
+                            <con:Linear k="5"/>
+                        </con:CompositeConverter.first>
+                        <con:CompositeConverter.second>
+                            <con:Linear k="-3" b="10"/>
+                        </con:CompositeConverter.second>
+                    </con:CompositeConverter>
+                    <com:StringToIntArray x:Key="StringToIntArray"/>
+                    <con:ToArray x:Key="ToArray"/>
+                </Grid.Resources>
+                <GridSplitter Grid.Row="0"
+                              VerticalAlignment="Bottom"
+                              HorizontalAlignment="Stretch"
+                            />
+                <oxy:Plot Grid.Row="0">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left"
+                                        Title="Число" 
+                                        MajorGridlineStyle="Solid" 
+                                        MinorGridlineStyle="Dash"/>
+                        <oxy:DateTimeAxis Position="Bottom"
+                                          Title="Дата"/>
+                    </oxy:Plot.Axes>
+                    <oxy:LineSeries StrokeThickness="2"
+                                    Color="OrangeRed"
+                                    ItemsSource="{Binding SelectedCountry.Confirmed}"
+                                    DataFieldX="Date"
+                                    DataFieldY="Count"
+                                    />
+                </oxy:Plot>
+                <map:Map Grid.Row="1"
+                         ZoomLevel="4" MaxZoomLevel="21" 
+                         Center="{Binding SelectedCountry.Location, Converter={con:PointToLocation}}">
+                    <map:MapScale Margin="4" 
+                                  Opacity="0.6" 
+                                  Background="Transparent" 
+                                  VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                    <map:MapGraticule Opacity="0.3" Background="Transparent"/>
+                    <map:Map.MapLayer>
+                        <map:MapTileLayer TileSource="https://stamen-tiles.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png"/>
+                    </map:Map.MapLayer>
+                </map:Map>
+                <!--<ListBox.ItemsSource>
+                        <MultiBinding Converter="{StaticResource ToArray}" StringFormat="{}{0}">
+                            <Binding ElementName="Value1" Path="Value"/>
+                            <Binding ElementName="Value2" Path="Value"/>
+                            <Binding ElementName="Value3" Path="Value"/>
+                            <Binding ElementName="Value4" Path="Value"/>
+                        </MultiBinding>
+                    </ListBox.ItemsSource>
+                </ListBox>-->
+                <!--<TextBlock Grid.Row="1">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource ToArray}" StringFormat="{}{0}">
+                            <Binding ElementName="Value1" Path="Value"/>
+                            <Binding ElementName="Value2" Path="Value"/>
+                            <Binding ElementName="Value3" Path="Value"/>
+                            <Binding ElementName="Value4" Path="Value"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>-->
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>
