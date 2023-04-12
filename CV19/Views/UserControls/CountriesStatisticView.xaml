@@ -10,6 +10,7 @@
              xmlns:vm="clr-namespace:CV19.ViewModels"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:model="clr-namespace:CV19.Models"
+             xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="450"  d:DesignWidth="800"
@@ -98,12 +99,24 @@
                                           Title="Дата"/>
                     </oxy:Plot.Axes>
                     <oxy:LineSeries StrokeThickness="2"
-                                    Color="Red"
+                                    Color="OrangeRed"
                                     ItemsSource="{Binding SelectedCountry.Confirmed}"
                                     DataFieldX="Date"
                                     DataFieldY="Count"
                                     />
                 </oxy:Plot>
+                <map:Map Grid.Row="1"
+                         ZoomLevel="4" MaxZoomLevel="21" 
+                         Center="{Binding SelectedCountry.Location, Converter={con:PointToLocation}}">
+                    <map:MapScale Margin="4" 
+                                  Opacity="0.6" 
+                                  Background="Transparent" 
+                                  VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                    <map:MapGraticule Opacity="0.3" Background="Transparent"/>
+                    <map:Map.MapLayer>
+                        <map:MapTileLayer TileSource="https://stamen-tiles.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png"/>
+                    </map:Map.MapLayer>
+                </map:Map>
                 <!--<ListBox.ItemsSource>
                         <MultiBinding Converter="{StaticResource ToArray}" StringFormat="{}{0}">
                             <Binding ElementName="Value1" Path="Value"/>

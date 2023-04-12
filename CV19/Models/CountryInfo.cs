@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Linq;
-using System;
 
 namespace CV19.Models
 {
