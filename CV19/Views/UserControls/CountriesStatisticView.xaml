@@ -51,7 +51,7 @@
                                 <TextBlock Text="{Binding Location.Y, StringFormat=[Долгота: {0}]}"/>-->
                                 <TextBlock>
                                     <TextBlock Text="{Binding Name}"/>
-                                    <TextBlock x:Name="countryInfo" Text="{Binding Location, Converter = {StaticResource PointToStr}, StringFormat=({0})}"
+                                    <TextBlock x:Name="countryInfo" Text="{Binding Location,Converter = {StaticResource PointToStr} , StringFormat=({0})}"
                                                Foreground="DarkGreen"/>
                                 </TextBlock>
                             </StackPanel>
@@ -107,7 +107,7 @@
                 </oxy:Plot>
                 <map:Map Grid.Row="1"
                          ZoomLevel="4" MaxZoomLevel="21" 
-                         Center="{Binding SelectedCountry.Location, Converter={con:PointToLocation}}">
+                         Center="{Binding SelectedCountry.Location, Converter={con:PointToLocation}, Mode=TwoWay}">
                     <map:MapScale Margin="4" 
                                   Opacity="0.6" 
                                   Background="Transparent" 

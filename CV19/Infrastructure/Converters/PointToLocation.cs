@@ -21,7 +21,8 @@ namespace CV19.Infrastructure.Converters
         public override object ConvertBack(object value, Type targetType, object param, CultureInfo culture)
         {
             if (!(value is Location loc) || value == null) return null;
-            return new Point(x: loc.Latitude, y: loc.Longitude);
+            else if (Equals(param?.ToString(), "cBack")) return new Point(x: loc.Latitude, y: loc.Longitude);
+            return Binding.DoNothing;
         }
     }
 }
